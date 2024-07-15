@@ -1,7 +1,7 @@
 
 # Robert Fisher ICESUN Kunming Lectures, 2024
 
-This is a clean and readable page created using GitHub Pages.
+This pages contains background reading and source code files for Prof. Fisher's ICESUN Kunming Summer Lectures.
 
 ## Links
 
