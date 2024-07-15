@@ -8,7 +8,7 @@ This is a clean and readable page created using GitHub Pages.
 
 ## Links
 
-- [PDF File](./path-to-your-file.pdf)
+- [PDF File](./hydro_equation_derivation.pdf)
 - [GitHub Repository](https://github.com/yourusername/your-repo)
 
 ## About
