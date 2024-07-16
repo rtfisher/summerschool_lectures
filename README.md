@@ -1,5 +1,5 @@
 
-# Robert Fisher ICESUN Kunming Lectures, 2024
+# ICESUN Kunming Lectures on Hydrodynamics and Ideal Magnetohydrodynamics for Stellar Transients, 2024
 
 This pages contains background reading and source code files for Prof. Fisher's ICESUN Kunming Summer Lectures.
 
