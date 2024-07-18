@@ -1,0 +1,65 @@
+# Use an appropriate base image
+FROM ubuntu:20.04 AS base
+
+# Set environment variables to avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
+# Dummy environment variable to invalidate cache
+ENV CACHEBUST=1
+
+# Install dependencies including HDF5
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gfortran \
+    openmpi-bin \
+    libhdf5-openmpi-dev \
+    cmake \
+    wget \
+    python3 \
+    python3-pip \
+    git \
+    tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set environment variables for OpenMPI and HDF5
+ENV PATH=/usr/lib/openmpi/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/lib/openmpi/lib:/usr/lib/x86_64-linux-gnu/hdf5/serial/:$LD_LIBRARY_PATH
+ENV HDF5_DIR=/usr/include/hdf5/serial
+
+# Conditionally run verbose commands
+RUN if [ "$VERBOSE" = "true" ] ; then \
+        h5cc --version && \
+        which h5cc && \
+        ls -l /usr/lib/x86_64-linux-gnu/libhdf5* && \
+        mpicc --version && \
+        which mpicc ; \
+    fi
+
+# Set the working directory to /usr/src
+WORKDIR /usr/src
+
+# Clone the Flash-X repository from GitHub into the flashx directory
+RUN git clone https://github.com/rtfisher/Flash-X.git flashx
+
+# Set the working directory to the cloned repository
+WORKDIR /usr/src/flashx
+
+# Ensure the setup script is executable
+RUN chmod +x Flash-X/setup
+
+# Run the custom setup script
+FROM base AS build
+WORKDIR /usr/src/flashx
+RUN /usr/src/flashx/Flash-X/setup Sedov -2d -auto
+
+# Temporarily set the hostname and output machine name to stderr
+#RUN echo "my-custom-hostname" > /etc/hostname && hostname -F /etc/hostname && uname -a 1>&2
+
+# Change to the object directory and run make
+WORKDIR /usr/src/flashx/Flash-X/object
+RUN make
+
+# Set the entrypoint to your application
+ENTRYPOINT ["mpirun", "-np", "4", "/usr/src/flashx/object/flashx"]
+
