@@ -17,7 +17,7 @@ This pages contains background reading and source code files for Prof. Fisher's 
 3. To test run FLASH-X, get an interactive shell from Docker:
   - docker run --rm -it --entrypoint /bin/bash flashx-app
 - Once in the shell, run:
-  - ./flash4  
+  - ./flashx  
 
 ## About
 
