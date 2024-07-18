@@ -8,7 +8,7 @@ This pages contains background reading and source code files for Prof. Fisher's 
 1. Read the background reading.
 - [Background Reading: "The Fundamental Equations of Hydrodynamics and Ideal Magnetohydrodynamics for Astrophysical Flows"](./hydro_equation_derivation.pdf)
 
-2. Download and install the FLASH-X open source hydrodynamics code framework.
+2. Download and install the FLASH-X open source hydrodynamics code framework using Docker.
 - [FLASH-X repo](https://github.com/rtfisher/Flash-X)
 
 ## About
