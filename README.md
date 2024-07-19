@@ -10,6 +10,7 @@ This pages contains background reading and source code files for Prof. Fisher's 
 
 2. Download and install the FLASH-X open source hydrodynamics code framework using Docker:
   - Download [flashx_dockerfile](https://github.com/rtfisher/summerschool_lectures/flashx-dockerfile)
+Be sure that the full path of the directory to which you downloaded the file contains no spaces, as this may cause the following process to fail.
 - From the same directory where you have downloaded the Docker file, build the container and the code:
   - docker build --no-cache -t flashx-app --progress=plain -f flashx_dockerfile .
 - If the build is successful, you will see the string "SUCCESS" after the link line.
