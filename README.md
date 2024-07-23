@@ -22,6 +22,7 @@ Be sure that the full path of the directory to which you downloaded the file con
   - ./flashx
 - A successful run will output information for each timestep, terminating in "exiting: reached max SimTime".    
 
-## About
+## Summer school notes:
 
-More to be included....
+This section will contain notes relevant to the summer school, including the lecture slides, which will be made available afterwards.
+
