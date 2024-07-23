@@ -16,7 +16,7 @@ Be sure that the full path of the directory to which you downloaded the file con
 - If the build is successful, you will see the string "SUCCESS" after the link line.
   
 3. To test run FLASH-X, get an interactive shell from Docker:
-  - docker run --rm -it --entrypoint /bin/bash flashx-app
+  - docker run --rm -it --hostname buildkitsandbox --entrypoint /bin/bash flashx-app
 - Once in the shell, run:
   - ./flashx
 - A successful run will output information for each timestep, terminating in "exiting: reached max SimTime".    
