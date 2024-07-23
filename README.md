@@ -15,11 +15,13 @@ Be sure that the full path of the directory to which you downloaded the file con
   ```sh
   docker build -t flashx-app --progress=plain -f flashx_dockerfile .```
 - OR to build from scratch, one can _optionally_ use the --no-cache flag:
-  - docker build --no-cache -t flashx-app --progress=plain -f flashx_dockerfile .
+  ```sh
+  docker build --no-cache -t flashx-app --progress=plain -f flashx_dockerfile .```
 - The build process will take several minutes, depending on your internet connection. Once the build is successful, you will see the string "SUCCESS" after the link line.
   
 3. To test run FLASH-X, get an interactive shell from Docker:
-  - docker run --rm -it --hostname buildkitsandbox --entrypoint /bin/bash flashx-app
+```sh
+ docker run --rm -it --hostname buildkitsandbox --entrypoint /bin/bash flashx-app```
 - Once in the shell, run:
   - ./flashx
 - A successful run will output information for each timestep, terminating in "exiting: reached max SimTime".
