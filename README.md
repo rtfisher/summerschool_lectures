@@ -24,7 +24,9 @@ Be sure that the full path of the directory to which you downloaded the file con
  docker run --rm -it --hostname buildkitsandbox --entrypoint /bin/bash flashx-app
 ```
 - Once in the shell, run:
+  ```
   - ./flashx
+  ```
 - A successful run will output information for each timestep, terminating in "exiting: reached max SimTime".
 
 4. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
