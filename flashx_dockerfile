@@ -5,10 +5,7 @@ FROM ubuntu:20.04 AS base
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
-# Dummy environment variable to invalidate cache
-ENV CACHEBUST=1
-
-# Install dependencies including HDF5
+# Install dependencies including HDF5 and Python packages for yt
 RUN apt-get update && apt-get install -y \
     build-essential \
     gfortran \
@@ -22,44 +19,48 @@ RUN apt-get update && apt-get install -y \
     tzdata \
     && rm -rf /var/lib/apt/lists/*
 
+# Install yt toolkit
+RUN pip3 install yt
+
 # Set environment variables for OpenMPI and HDF5
 ENV PATH=/usr/lib/openmpi/bin:$PATH
 ENV LD_LIBRARY_PATH=/usr/lib/openmpi/lib:/usr/lib/x86_64-linux-gnu/hdf5/serial/:$LD_LIBRARY_PATH
 ENV HDF5_DIR=/usr/include/hdf5/serial
 
-# Conditionally run verbose commands
-RUN if [ "$VERBOSE" = "true" ] ; then \
-        h5cc --version && \
-        which h5cc && \
-        ls -l /usr/lib/x86_64-linux-gnu/libhdf5* && \
-        mpicc --version && \
-        which mpicc ; \
-    fi
+# Increase Git buffer size to handle large repositories
+RUN git config --global http.postBuffer 104857600
 
-# Set the working directory to /usr/src
-WORKDIR /usr/src
+# Create a non-root user and group
+RUN groupadd -r flashgroup && useradd -r -g flashgroup -m -d /home/flashuser -s /bin/bash flashuser
 
-# Clone the Flash-X repository from GitHub into the flashx directory
-RUN git clone https://github.com/rtfisher/Flash-X.git flashx
+
+# Switch to the flashuser home directory
+WORKDIR /home/flashuser
+
+# Clone the Flash-X repository from GitHub into the home directory
+RUN git clone --depth 1 https://github.com/rtfisher/Flash-X.git flashx
 
 # Set the working directory to the cloned repository
-WORKDIR /usr/src/flashx
+WORKDIR /home/flashuser/flashx
 
 # Ensure the setup script is executable
 RUN chmod +x Flash-X/setup
 
 # Run the custom setup script
-FROM base AS build
-WORKDIR /usr/src/flashx
-RUN /usr/src/flashx/Flash-X/setup Sedov -2d -auto
+RUN /home/flashuser/flashx/Flash-X/setup Sedov -2d -auto
 
 # Temporarily set the hostname and output machine name to stderr
-#RUN echo "my-custom-hostname" > /etc/hostname && hostname -F /etc/hostname && uname -a 1>&2
+#RUN echo "flashhost" > /etc/hostname && hostname -F /etc/hostname && uname -a 1>&2
 
 # Change to the object directory and run make
-WORKDIR /usr/src/flashx/Flash-X/object
+WORKDIR /home/flashuser/flashx/Flash-X/object
 RUN make
 
-# Set the entrypoint to your application
-ENTRYPOINT ["mpirun", "-np", "4", "/usr/src/flashx/object/flashx"]
+# Change ownership of the home directory to flashuser
+RUN chown -R flashuser:flashgroup /home/flashuser
 
+# Switch to the non-root user
+USER flashuser
+
+# Set the entrypoint to your application
+ENTRYPOINT ["mpirun", "-np", "4", "/home/flashuser/flashx/object/flashx"]
