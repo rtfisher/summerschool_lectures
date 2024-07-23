@@ -36,11 +36,10 @@ Be sure that the full path of the directory to which you downloaded the file con
 4. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
 
 ```sh
-docker stop $(docker ps -aq) && \
-docker rm $(docker ps -aq) && \
-docker rmi -f $(docker images -aq) && \
+docker ps -q | xargs -r docker stop && \
+docker ps -aq | xargs -r docker rm && \
+docker images -q | xargs -r docker rmi -f && \
 docker volume ls -q | xargs -r docker volume rm && \
-docker network ls -q | grep -v 'bridge\|host\|none' | xargs -r docker network rm && \
 docker builder prune -a -f && \
 docker system prune -a -f
 ```
