@@ -12,6 +12,8 @@ This pages contains background reading and source code files for Prof. Fisher's 
 
 Be sure that the full path of the directory to which you downloaded the file contains no spaces, as this may cause the following process to fail.
 - From the same directory where you have downloaded the Docker file, build the container and the code:
+  - docker build -t flashx-app --progress=plain -f flashx_dockerfile .
+- OR to build from scratch, one can _optionally_ use the --no-cache flag:
   - docker build --no-cache -t flashx-app --progress=plain -f flashx_dockerfile .
 - If the build is successful, you will see the string "SUCCESS" after the link line.
   
