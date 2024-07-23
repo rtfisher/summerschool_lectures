@@ -33,8 +33,16 @@ Be sure that the full path of the directory to which you downloaded the file con
 
 4. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
 
-```
-docker stop $(docker ps -aq) && docker rm $(docker ps -aq) && docker rmi -f $(docker images -aq) && docker volume rm $(docker volume ls -q) && docker network rm $(docker network ls -q) && docker builder prune -a -f && docker system prune
+4. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
+
+```sh
+docker stop $(docker ps -aq) && \
+docker rm $(docker ps -aq) && \
+docker rmi -f $(docker images -aq) && \
+docker volume ls -q | xargs -r docker volume rm && \
+docker network ls -q | grep -v 'bridge\|host\|none' | xargs -r docker network rm && \
+docker builder prune -a -f && \
+docker system prune -a -f
 ```
 
 Note that this command will erase _all_ Docker workspace, including any other Docker containers you have on your machine, and should _only_ be used if you do not need any prior Docker containers.
