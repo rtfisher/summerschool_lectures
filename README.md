@@ -24,8 +24,10 @@ Be sure that the full path of the directory to which you downloaded the file con
 - A successful run will output information for each timestep, terminating in "exiting: reached max SimTime".
 
 4. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
-- <p>docker stop $(docker ps -aq) &amp&amp docker rm $(docker ps -aq) &amp&amp docker rmi -f $(docker images -aq) &amp&amp docker volume rm $(docker volume ls -q) &amp&amp docker network rm $(docker network ls -q) &amp&amp docker builder prune -a -f &amp&amp docker system prune</p>
-Note that this command will erase _all_ Docker work space, including any other Docker containers you have on your machine, and should _only_ be used if you do not need any prior Docker containers.
+- <p>docker stop $(docker ps -aq) &amp;&amp; docker rm $(docker ps -aq) &amp;&amp; docker rmi -f $(docker images -aq) &amp;&amp; docker volume rm $(docker volume ls -q) &amp;&amp; docker network rm $(docker network ls -q) &amp;&amp; docker builder prune -a -f &amp;&amp; docker system prune</p>
+
+Note that this command will erase _all_ Docker workspace, including any other Docker containers you have on your machine, and should _only_ be used if you do not need any prior Docker containers.
+
 
 
 ## Summer school notes:
