@@ -25,7 +25,7 @@ Be sure that the full path of the directory to which you downloaded the file con
 ```
 - Once in the shell, run:
   ```
-  - ./flashx
+   ./flashx
   ```
 - A successful run will output information for each timestep, terminating in "exiting: reached max SimTime".
 
