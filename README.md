@@ -14,11 +14,11 @@ Be sure that the full path of the directory to which you downloaded the file con
 - From the same directory where you have downloaded the Docker file, build the container and the code:
   <br>
   ```
-  docker build -t flashx-app --progress=plain -f flashx_dockerfile .```
+  docker build -t flashx-app --progress=plain -f flashx_dockerfile .
 - OR to build from scratch, one can _optionally_ use the --no-cache flag:
   <br>
   ```
-  docker build --no-cache -t flashx-app --progress=plain -f flashx_dockerfile .```
+  docker build --no-cache -t flashx-app --progress=plain -f flashx_dockerfile .
 - The build process will take several minutes, depending on your internet connection. Once the build is successful, you will see the string "SUCCESS" after the link line.
   
 3. To test run FLASH-X, get an interactive shell from Docker:
