@@ -23,7 +23,7 @@ Be sure that the full path of the directory to which you downloaded the file con
   
 3. To test run FLASH-X in a container named "flashx-container," get an interactive shell from Docker:
  ```  
- docker run --rm -it --name flashx-container --hostname buildkitsandbox --entrypoint /bin/bash flashx-app
+ docker run --rm -it --name flashx-container --hostname buildkitsandbox flashx-app
 ```
 - Once in the shell, run:
   ```
