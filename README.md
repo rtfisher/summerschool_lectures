@@ -33,6 +33,10 @@ Be sure that the full path of the directory to which you downloaded the file con
 
 ## Notes on Using Docker:
 
+0. To copy files from Docker to your system, use the "docker cp" command. For example, to copy the contents of a folder called "figures" within the Flash-X object directory to your desktop, run the following from the command line on your system (not from within the Docker container): 
+```
+docker cp flashx-container:/home/flashuser/flashx/Flash-X/object/figures ~/Desktop/
+```
 1. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
 
 ```sh
