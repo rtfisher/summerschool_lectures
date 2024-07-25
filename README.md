@@ -33,7 +33,7 @@ Be sure that the full path of the directory to which you downloaded the file con
 
 ## Notes on Using Docker:
 
-1. To stop any running Doceer containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
+1. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
 
 ```sh
 docker ps -q | xargs -r docker stop && \
