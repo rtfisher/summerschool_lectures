@@ -1,3 +1,11 @@
+# This Dockerfile contains the necessary steps to build a container for Flash-X, 
+# including the HDF5 and OpenMPI dependencies, yt through a Miniconda environment,
+# and the Flash-X source code itself.
+#
+# The container is built on an ARM architecture and uses the Ubuntu 20.04 base image.
+#
+# RTF, 072524
+
 # Use an appropriate base image
 FROM ubuntu:20.04 AS base
 
@@ -10,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     gfortran \
     openmpi-bin \
+    libhdf5-dev\
     libhdf5-openmpi-dev \
     cmake \
     wget \
@@ -17,28 +26,49 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     git \
     tzdata \
+    vim \
     && rm -rf /var/lib/apt/lists/*
-
-# Install yt toolkit
-RUN pip3 install yt
 
 # Set environment variables for OpenMPI and HDF5
 ENV PATH=/usr/lib/openmpi/bin:$PATH
-ENV LD_LIBRARY_PATH=/usr/lib/openmpi/lib:/usr/lib/x86_64-linux-gnu/hdf5/serial/:$LD_LIBRARY_PATH
-ENV HDF5_DIR=/usr/include/hdf5/serial
+ENV HDF5_DIR=/usr/lib/aarch64-linux-gnu/hdf5/openmpi
+ENV LD_LIBRARY_PATH=$HDF5_DIR/lib
 
-# Increase Git buffer size to handle large repositories
+# Install Miniconda for ARM architecture
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O /tmp/miniconda.sh && \
+    bash /tmp/miniconda.sh -b -p /opt/miniconda && \
+    rm /tmp/miniconda.sh
+
+# Update PATH to include conda
+ENV PATH="/opt/miniconda/bin:${PATH}"
+
+# Ensure conda is up-to-date
+RUN conda update -n base -c defaults conda
+
+
+# Create a Conda environment with Python 3.10, h5py, and yt
+RUN conda create -n myenv python=3.10 h5py yt -y
+
+# Activate the environment
+RUN echo "source activate myenv" >> ~/.bashrc
+ENV CONDA_DEFAULT_ENV=myenv
+ENV PATH="/opt/miniconda/envs/myenv/bin:$PATH"
+
+# Increase Git buffer size to handle large repositories for Flash-X
 RUN git config --global http.postBuffer 104857600
 
 # Create a non-root user and group
 RUN groupadd -r flashgroup && useradd -r -g flashgroup -m -d /home/flashuser -s /bin/bash flashuser
 
-
 # Switch to the flashuser home directory
 WORKDIR /home/flashuser
 
-# Clone the Flash-X repository from GitHub into the home directory
-RUN git clone --depth 1 https://github.com/rtfisher/Flash-X.git flashx
+# Retry mechanism for git clone
+RUN git_clone_with_retries() { \
+      for i in {1..5}; do \
+        git clone --depth 1 https://github.com/rtfisher/Flash-X.git flashx && break || sleep 5; \
+      done; \
+    } && git_clone_with_retries
 
 # Set the working directory to the cloned repository
 WORKDIR /home/flashuser/flashx
@@ -48,9 +78,6 @@ RUN chmod +x Flash-X/setup
 
 # Run the custom setup script
 RUN /home/flashuser/flashx/Flash-X/setup Sedov -2d -auto
-
-# Temporarily set the hostname and output machine name to stderr
-#RUN echo "flashhost" > /etc/hostname && hostname -F /etc/hostname && uname -a 1>&2
 
 # Change to the object directory and run make
 WORKDIR /home/flashuser/flashx/Flash-X/object
@@ -62,5 +89,17 @@ RUN chown -R flashuser:flashgroup /home/flashuser
 # Switch to the non-root user
 USER flashuser
 
-# Set the entrypoint to your application
-ENTRYPOINT ["mpirun", "-np", "4", "/home/flashuser/flashx/object/flashx"]
+# Create a manifest file with date, uname, and installed software versions for reproducibility
+RUN mkdir -p /home/flashuser && \
+    echo "Date: $(date)" > /home/flashuser/MANIFEST && \
+    echo "System Specifications: $(uname -a)" >> /home/flashuser/MANIFEST && \
+    echo "Installed Packages:" >> /home/flashuser/MANIFEST && \
+    dpkg -l >> /home/flashuser/MANIFEST && \
+    echo "Python Packages:" >> /home/flashuser/MANIFEST && \
+    pip freeze >> /home/flashuser/MANIFEST
+
+# Set the working directory
+WORKDIR /home/flashuser/flashx/object/
+
+# Set the entrypoint to an interactive shell
+ENTRYPOINT ["/bin/bash"]
