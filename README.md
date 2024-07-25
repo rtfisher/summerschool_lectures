@@ -37,6 +37,7 @@ Be sure that the full path of the directory to which you downloaded the file con
 ```
 docker cp flashx-container:/home/flashuser/flashx/Flash-X/object/figures ~/Desktop/
 ```
+Note the docker cp command does not accept wildcards ("*"), so it is better to organize the files you wish to copy over in directories.
 1. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
 
 ```sh
