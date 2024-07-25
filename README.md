@@ -31,9 +31,9 @@ Be sure that the full path of the directory to which you downloaded the file con
   ```
 - A successful run will output information for each timestep, terminating in "exiting: reached max SimTime".
 
-4. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
+## Notes on Using Docker:
 
-5. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
+1. To stop any running Doceer containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
 
 ```sh
 docker ps -q | xargs -r docker stop && \
@@ -45,7 +45,7 @@ docker system prune -a -f
 ```
 Note that this command will erase _all_ Docker workspace, including any other Docker containers you have on your machine, and should _only_ be used if you do not need any prior Docker containers.
 
-6. Occasionally, you may need to restart the Docker daemon. On OS/X:
+2. Occasionally, you may need to restart the Docker daemon. On OS/X:
 ```
  osascript -e 'quit app "Docker"'
 open /Applications/Docker.app
