@@ -47,7 +47,7 @@ Note that this command will erase _all_ Docker workspace, including any other Do
 
 2. Occasionally, you may need to restart the Docker daemon. On OS/X:
 ```
- osascript -e 'quit app "Docker"'
+osascript -e 'quit app "Docker"'
 open /Applications/Docker.app
 ```
 
