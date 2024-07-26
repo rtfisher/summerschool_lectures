@@ -1,6 +1,6 @@
 # ICESUN Kunming Lectures on Hydrodynamics and Ideal Magnetohydrodynamics for Stellar Transients, 2024
 
-This pages contains background reading and source code files for Prof. Fisher's ICESUN Kunming Summer Lectures.
+This pages contains background reading and source code files for Prof. Fisher's [ICESUN Kunming Summer School](https://stellar-explosion2024.casconf.cn/) Lectures.
 
 ## Before the summer school:
 
