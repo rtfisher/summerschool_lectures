@@ -1,8 +1,9 @@
-# This Dockerfile contains the necessary steps to build a container for Flash-X, 
+# This Dockerfile contains the necessary steps to build a container for Flash-X,
 # including the HDF5 and OpenMPI dependencies, yt through a Miniconda environment,
 # and the Flash-X source code itself.
 #
-# The container is built on an ARM architecture and uses the Ubuntu 20.04 base image.
+# The container is on the 20.04 base image, and automatically detects the architecture
+#  for either x86_64 or aarch64. The appropriate Miniconda version is installed.
 #
 # RTF, 072524
 
@@ -29,13 +30,18 @@ RUN apt-get update && apt-get install -y \
     vim \
     && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables for OpenMPI and HDF5
 ENV PATH=/usr/lib/openmpi/bin:$PATH
-ENV HDF5_DIR=/usr/lib/aarch64-linux-gnu/hdf5/openmpi
-ENV LD_LIBRARY_PATH=$HDF5_DIR/lib
 
-# Install Miniconda for ARM architecture
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O /tmp/miniconda.sh && \
+# Detect architecture and install the correct version of Miniconda
+RUN ARCH=$(uname -m) && \
+    if [ "${ARCH}" = "x86_64" ]; then \
+        MINICONDA_URL="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"; \
+    elif [ "${ARCH}" = "aarch64" ]; then \
+        MINICONDA_URL="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"; \
+    else \
+        echo "Unsupported architecture: ${ARCH}"; exit 1; \
+    fi && \
+    wget "${MINICONDA_URL}" -O /tmp/miniconda.sh && \
     bash /tmp/miniconda.sh -b -p /opt/miniconda && \
     rm /tmp/miniconda.sh
 
@@ -44,7 +50,6 @@ ENV PATH="/opt/miniconda/bin:${PATH}"
 
 # Ensure conda is up-to-date
 RUN conda update -n base -c defaults conda
-
 
 # Create a Conda environment with Python 3.10, h5py, and yt
 RUN conda create -n myenv python=3.10 h5py yt -y
@@ -76,7 +81,6 @@ WORKDIR /home/flashuser/flashx
 # Ensure the setup script is executable
 RUN chmod +x Flash-X/setup
 
-# Run the custom setup script
 RUN /home/flashuser/flashx/Flash-X/setup Sedov -2d -auto
 
 # Change to the object directory and run make
@@ -99,7 +103,6 @@ RUN mkdir -p /home/flashuser && \
     pip freeze >> /home/flashuser/MANIFEST
 
 # Set the working directory
-WORKDIR /home/flashuser/flashx/object/
+WORKDIR /home/flashuser/flashx/Flash-X/object
 
-# Set the entrypoint to an interactive shell
-ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/bash"]
