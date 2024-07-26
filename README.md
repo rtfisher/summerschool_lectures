@@ -29,7 +29,7 @@ Be sure that the full path of the directory to which you downloaded the file con
   ```
    ./flashx
   ```
-- A successful run will output information for each timestep, terminating in "exiting: reached max SimTime".
+- A successful run will output information for each timestep, terminating in "exiting: reached max SimTime". The docker container also installs the Python-based toolkit yt for analysis.
 
 ## Notes on Using Docker:
 
