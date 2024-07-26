@@ -27,6 +27,7 @@ Be sure that the full path of the directory to which you downloaded the file con
  ```  
  docker run --rm -it --name flashx-container --hostname buildkitsandbox flashx-app
 ```
+The "--rm" flag deletes the container after it has completed execution.
 - Once in the shell, run:
   ```
    ./flashx
