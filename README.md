@@ -11,7 +11,7 @@ This pages contains background reading and source code files for Prof. Fisher's 
   - [Download flashx_dockerfile](https://raw.githubusercontent.com/rtfisher/summerschool_lectures/main/flashx_dockerfile)
 
 Be sure that the full path of the directory to which you downloaded the file contains no spaces, as this may cause the following process to fail.
-- From the same directory where you have downloaded the Docker file, build the container and the code:
+- Launch the Docker client. From the same directory where you have downloaded the Docker file, build the container and the code:
   <br>
   ```
   docker build -t flashx-app --progress=plain -f flashx_dockerfile .
