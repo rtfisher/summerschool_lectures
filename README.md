@@ -36,12 +36,21 @@ The "--rm" flag deletes the container after it has completed execution.
 
 ## Notes on Using Docker:
 
-0. To copy files from Docker to your system, use the "docker cp" command. For example, to copy the contents of a folder called "figures" within the Flash-X object directory to your desktop, run the following from the command line on your system (not from within the Docker container): 
+0. You may see an error message 'error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: `" '. To fix this, simply edit the line storing your Docker credebtuak preference in ~/.docker/config.json, changing "credsStore" to "credStore":
+
+```
+    "credStore": "desktop",
+```
+
+Save the config file and restart Docker. This appears to have been a bug in some older versions of Docker which has been fixed in more recent versions. It may arise on legacy systems (such as Intel architectures on older OS/X machines).
+
+
+1. To copy files from Docker to your system, use the "docker cp" command. For example, to copy the contents of a folder called "figures" within the Flash-X object directory to your desktop, run the following from the command line on your system (not from within the Docker container): 
 ```
 docker cp flashx-container:/home/flashuser/flashx/Flash-X/object/figures ~/Desktop/
 ```
 Note the docker cp command does not accept wildcards ("*"), so it is better to organize the files you wish to copy over in directories.
-1. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
+2. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
 
 ```sh
 docker ps -q | xargs -r docker stop && \
@@ -53,7 +62,7 @@ docker system prune -a -f
 ```
 Note that this command will erase _all_ Docker workspace, including any other Docker containers you have on your machine, and should _only_ be used if you do not need any prior Docker containers.
 
-2. Occasionally, you may need to restart the Docker daemon. On OS/X:
+3. Occasionally, you may need to restart the Docker daemon. On OS/X:
 ```
 osascript -e 'quit app "Docker"'
 open /Applications/Docker.app
