@@ -36,7 +36,7 @@ The "--rm" flag deletes the container after it has completed execution.
 
 ## Notes on Using Docker:
 
-0. You may see an error message 'error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: `" '. To fix this, simply edit the line storing your Docker credebtuak preference in ~/.docker/config.json, changing "credsStore" to "credStore":
+0. You may see an error message 'error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: `" '. To fix this, simply edit the line storing your Docker credential preference in ~/.docker/config.json, changing "credsStore" to "credStore":
 
 ```
     "credStore": "desktop",
