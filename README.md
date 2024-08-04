@@ -11,7 +11,6 @@ This pages contains background reading and source code files for Prof. Fisher's 
 
 - Save the Docker file as "flashx_dockerfile":
   - [Download flashx_dockerfile](https://raw.githubusercontent.com/rtfisher/summerschool_lectures/main/flashx_dockerfile)
-
 Be sure that the full path of the directory to which you downloaded the file contains no spaces, as this may cause the following process to fail.
 - Launch the Docker Desktop client. From the same directory where you have downloaded the Docker file, build the container and the code:
   <br>
