@@ -7,7 +7,9 @@ This pages contains background reading and source code files for Prof. Fisher's 
 1. Read the background reading.
 - [Background Reading: "The Fundamental Equations of Hydrodynamics and Ideal Magnetohydrodynamics for Astrophysical Flows"](./hydro_equation_derivation.pdf)
 
-2. Download and install the FLASH-X open source hydrodynamics code framework using Docker. Make sure you have downloaded and installed Docker; the Docker Desktop is recommended for first time users (https://www.docker.com/products/docker-desktop/). Save the Docker file as "flashx_dockerfile":
+2. Download and install the FLASH-X open source hydrodynamics code framework using Docker. The docker container also installs the Python-based toolkit yt for analysis of the data output by FLASH-X.
+
+- Make sure you have downloaded and installed Docker; the Docker Desktop is recommended for first time users (https://www.docker.com/products/docker-desktop/). Save the Docker file as "flashx_dockerfile":
   - [Download flashx_dockerfile](https://raw.githubusercontent.com/rtfisher/summerschool_lectures/main/flashx_dockerfile)
 
 Be sure that the full path of the directory to which you downloaded the file contains no spaces, as this may cause the following process to fail.
@@ -21,9 +23,9 @@ Be sure that the full path of the directory to which you downloaded the file con
   ```
   docker build --no-cache -t flashx-app --progress=plain -f flashx_dockerfile .
   ```
-- The build process will take several minutes, depending on your internet connection. Once the build is successful, you will see the string "SUCCESS" after the link line.
+- The container automatically builds the Sedov test problem for FLASH-X by default. The build process will take several minutes, depending on your internet connection. Once the build is successful, you will see the string "SUCCESS" after the link line.
   
-3. To test run FLASH-X in a container named "flashx-container":
+3. To test run the Sedov problem in FLASH-X in a container named "flashx-container":
  ```  
  docker run --rm -it --name flashx-container --hostname buildkitsandbox flashx-app
 ```
@@ -32,7 +34,7 @@ The "--rm" flag deletes the container after it has completed execution.
   ```
    ./flashx
   ```
-- A successful run will output information for each timestep, terminating in "exiting: reached max SimTime". The docker container also installs the Python-based toolkit yt for analysis.
+- A successful run will output information for each timestep, terminating in "exiting: reached max SimTime". 
 
 ## Notes on Using Docker:
 
