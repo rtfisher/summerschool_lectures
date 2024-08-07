@@ -47,7 +47,7 @@ The "--rm" flag deletes the container after it has completed execution.
 Save the config file and restart Docker. This appears to have been a bug in some older versions of Docker which has been fixed in more recent versions. It may arise on legacy systems (such as Intel architectures on older OS/X machines).
 
 
-1. To copy files from Docker to your system, use the "docker cp" command. For example, to copy the contents of a folder called "figures" within the Flash-X object directory to your desktop, run the following from the command line on your system (not from within the Docker container): 
+1. To copy files from Docker to your system, use the "docker cp" command. For example, to copy the contents of a folder called "figures" within the Flash-X object directory to your desktop on OS/X, run the following from the command line on your system (not from within the Docker container): 
 ```
 docker cp flashx-container:/home/flashuser/flashx/Flash-X/object/figures ~/Desktop/
 ```
