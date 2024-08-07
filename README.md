@@ -28,7 +28,6 @@ Be sure that the full path of the directory to which you downloaded the file con
 3. To test run the Sedov problem in FLASH-X in a container named "flashx-container", and also mounting the "object" subdirectory within the container to a Desktop directory named "flashx":
  ```  
  docker run --rm -it --name flashx-container --hostname buildkitsandbox -v ~/Desktop/flashx:/home/flashuser/flashx/Flash-X/object flashx-app
-
 ```
 The "--rm" flag deletes the container after it has completed execution.
 - Once in the shell, run:
