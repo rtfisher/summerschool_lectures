@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y \
     git \
     tzdata \
     vim \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PATH=/usr/lib/openmpi/bin:$PATH
