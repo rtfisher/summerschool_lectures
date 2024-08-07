@@ -5,6 +5,10 @@
 # The container is on the 20.04 base image, and automatically detects the architecture
 #  for either x86_64 or aarch64. The appropriate Miniconda version is installed.
 #
+# The FLASH-X setup script is automatically called to build the Sedov test problem in 
+#  2d Cartesian geometry by default, producing the flashx executable in the object
+#  subdirectory.
+#
 # RTF, 072524
 
 # Use an appropriate base image
