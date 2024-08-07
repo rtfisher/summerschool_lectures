@@ -73,7 +73,17 @@ open /Applications/Docker.app
 
 ## Notes on using yt
 
-1. To animate a sequence of .png files into a single output.mp4, one can use the ffmpeg command:
+1. To produce a series of slice plots (say, of the density field), one can use a Python3 script calling yt:
+
+```
+import yt
+import glob
+for file in glob.glob ("sedov_hdf5_chk*"):
+  ds = yt.load (file)
+  yt.SlicePlot (ds, 'z', 'density').save()
+```
+
+2. To animate a sequence of .png files into a single output.mp4, one can use the ffmpeg command:
 
 ```
 ffmpeg -i sedov_hdf5_chk_%04d_Slice_z_density.png -c:v libx264 -r 30 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" output.mp4
