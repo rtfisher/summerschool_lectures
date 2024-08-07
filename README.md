@@ -23,7 +23,7 @@ Be sure that the full path of the directory to which you downloaded the file con
   ```
   docker build --no-cache -t flashx-app --progress=plain -f flashx_dockerfile .
   ```
-- The container automatically builds the Sedov test problem for FLASH-X by default. The build process will take several minutes, depending on your internet connection. Once the build is successful, you will see the string "SUCCESS" after the link line.
+- The container automatically builds the Sedov test problem for FLASH-X by default. The build process will take several minutes, depending on your internet connection and processor speed. Once the build is successful, you will see the string "SUCCESS" after the link line.
   
 3. To test run the Sedov problem in FLASH-X in a container named "flashx-container":
  ```  
