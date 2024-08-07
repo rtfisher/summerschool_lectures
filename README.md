@@ -53,7 +53,7 @@ docker cp flashx-container:/home/flashuser/flashx/Flash-X/object/figures ~/Deskt
 ```
 Note the docker cp command does not accept wildcards ("*"), so it is better to organize the files you wish to copy over in directories.
 
-2. To stop any running Docker containers, and to completely clean up the disk space used by Docker, you can use this one-line command:
+2. To stop any running Docker containers, and to completely clean up the disk space used by Docker, on OS/X you can use this one-line command:
 
 ```sh
 docker ps -q | xargs -r docker stop && \
