@@ -25,9 +25,9 @@ Be sure that the full path of the directory to which you downloaded the file con
   ```
 - The container automatically builds the Sedov test problem for FLASH-X by default. The build process will take several minutes, depending on your internet connection and processor speed. Once the build is successful, you will see the string "SUCCESS" after the link line.
   
-3. To test run the Sedov problem in FLASH-X in a container named "flashx-container", and also mounting the "object" subdirectory within the container to a Desktop directory named "flashx":
+3. To test run the Sedov problem in FLASH-X in a container named "flashx-container", and also mounting the "desktop" subdirectory within the container to a local Desktop directory named "flashx":
  ```  
- docker run --rm -it --name flashx-container --hostname buildkitsandbox -v ~/Desktop/flashx:/home/flashuser/flashx/Flash-X/object flashx-app
+ docker run --rm -it --name flashx-container --hostname buildkitsandbox -v ~/Desktop/flashx:/home/flashuser/flashx/Flash-X/desktop flashx-app
 ```
 The "--rm" flag deletes the container after it has completed execution.
 - Once in the shell, run:
