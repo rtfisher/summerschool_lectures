@@ -93,5 +93,5 @@ ffmpeg -i sedov_hdf5_chk_%04d_Slice_z_density.png -c:v libx264 -r 30 -pix_fmt yu
 
 ## Summer school notes:
 
-This section will contain notes relevant to the summer school, including the lecture slides, which will be made available afterwards.
+This section will contain notes relevant to the summer school, including the lecture notes, which will be made available afterwards.
 
