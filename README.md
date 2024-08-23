@@ -96,7 +96,7 @@ import yt
 import glob
 for file in glob.glob ("sedov_hdf5_chk*"):
   ds = yt.load (file)
-  yt.LinePlot (ds, ["density"], (0.5, 0, 0), (1.0, 0, 0), 1000 ).save()
+  yt.LinePlot (ds, ["density"], (0.5, 0.5, 0), (1.0, 0.5, 0), 1000 ).save()
 ```
 4. To animate a sequence of .png files into a single output.mp4, one can use the ffmpeg command:
 
