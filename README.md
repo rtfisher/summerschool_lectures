@@ -1,6 +1,6 @@
 # ICESUN Kunming Lectures on Hydrodynamics and Ideal Magnetohydrodynamics for Stellar Transients, 2024
 
-This pages contains background reading and source code files for Prof. Fisher's [ICESUN Kunming Summer School](https://stellar-explosion2024.casconf.cn/) Lectures.
+This page contains background reading, source code files, and notes for Prof. Fisher's [ICESUN Kunming Summer School](https://stellar-explosion2024.casconf.cn/) Lectures.
 
 ## Before the summer school:
 
@@ -90,7 +90,15 @@ for file in glob.glob ("sedov_hdf5_chk*"):
   yt.SlicePlot (ds, 'z', 'density').save()
 ```
 
-2. To animate a sequence of .png files into a single output.mp4, one can use the ffmpeg command:
+2. It is also possible to produce 1D line plots using yt. The following example plots density from x = 0.5 (the center of the Sedov explosion in this setup) to x = 1 (the right edge of the domain):
+```
+import yt
+import glob
+for file in glob.glob ("sedov_hdf5_chk*"):
+  ds = yt.load (file)
+  yt.LinePlot (ds, ["density"], (0.5, 0, 0), (1.0, 0, 0), 1000 ).save()
+```
+4. To animate a sequence of .png files into a single output.mp4, one can use the ffmpeg command:
 
 ```
 ffmpeg -i sedov_hdf5_chk_%04d_Slice_z_density.png -c:v libx264 -r 30 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" output.mp4
@@ -100,5 +108,7 @@ ffmpeg -i sedov_hdf5_chk_%04d_Slice_z_density.png -c:v libx264 -r 30 -pix_fmt yu
 
 ## Summer school notes:
 
-This section will contain notes relevant to the summer school, including the lecture notes, which will be made available afterwards.
+The notes for Prof. Fisher's ICESUN lectures can be found here.
+
+- [Lecture Notes: "ICESUN Workshop Lecture Notes"](./fisher_icesun_lecture_notes.pdf)
 
