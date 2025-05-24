@@ -7,7 +7,7 @@ This page contains background reading, source code files, and notes for Prof. Fi
 1. Read the background reading.
 - [Background Reading: "The Fundamental Equations of Hydrodynamics and Ideal Magnetohydrodynamics for Astrophysical Flows"](./hydro_equation_derivation.pdf)
 
-2. Download and install the FLASH-X open source hydrodynamics code framework using Docker. The docker container also installs the Python-based toolkit yt for analysis of the data output by FLASH-X. Make sure you have downloaded and installed Docker; the Docker Desktop is recommended for first time users (https://www.docker.com/products/docker-desktop/).
+2. Download and install the FLASH-X open source hydrodynamics code framework using Docker. The docker container also installs the requisite MPI and HDF5 libraries needed to run FLASH-X, as well as the Python-based toolkit yt for analysis of the data output by FLASH-X. Make sure you have downloaded and installed Docker; the Docker Desktop is recommended for first time users (https://www.docker.com/products/docker-desktop/).
 
 - Save the Docker file as "flashx_dockerfile":
   - [Download flashx_dockerfile](https://raw.githubusercontent.com/rtfisher/summerschool_lectures/main/flashx_dockerfile)
