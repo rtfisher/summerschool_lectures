@@ -45,15 +45,6 @@ Be sure to change "YourUserName" to your actual user name on your computer.
 
 ## Notes on Using Docker:
 
-0. You may see an error message 'error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: `" '. To fix this, simply edit the line storing your Docker credential preference in ~/.docker/config.json, changing "credsStore" to "credStore":
-
-```
-    "credStore": "desktop",
-```
-
-Note that this change must be made _every_ time the Docker client restarts and overwrites the previous configuration file. Save the config file and restart Docker. This appears to have been a bug in some older versions of Docker which has been fixed in more recent versions. It may arise on legacy systems (such as Intel architectures on older OS/X machines).
-
-
 1. To copy files from Docker to your system, it is easiest to simply copy files over from within the container using a mounted subdirectory, as given for example in the run command above. From within the container, you could for example copy the file "flash.dat" to the system directory "~/flashx" using the command
 
 ```
@@ -82,6 +73,14 @@ Note that this command will erase _all_ Docker workspace, including any other Do
 osascript -e 'quit app "Docker"'
 open /Applications/Docker.app
 ```
+
+4. You may see an error message 'error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: `" '. To fix this, simply edit the line storing your Docker credential preference in ~/.docker/config.json, changing "credsStore" to "credStore":
+
+```
+    "credStore": "desktop",
+```
+
+Note that this change must be made _every_ time the Docker client restarts and overwrites the previous configuration file. Save the config file and restart Docker. This appears to have been a bug in some older versions of Docker which has been fixed in more recent versions. It may arise on legacy systems (such as Intel architectures on older OS/X machines).
 
 ## Notes on using yt
 
