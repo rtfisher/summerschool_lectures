@@ -6,3 +6,6 @@
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+
+# built PDFs live at the repository root, not beside the sources
+tex/*.pdf
