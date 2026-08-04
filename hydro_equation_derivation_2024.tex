@@ -1,0 +1,725 @@
+%\documentclass[letterpaper,11pt]{article}
+ \documentclass[notoc]{tufte-handout}
+%\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{inputenc}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\usepackage{comment}
+\usepackage{mathtools}
+\usepackage{cancel}
+
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+\usepackage{booktabs}
+\aboverulesep=0pt
+\belowrulesep=0pt
+
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{multicol}
+
+\usepackage{xcolor}
+\usepackage{float}
+
+
+\usepackage{graphicx} 
+%\usepackage[textwidth=2.5cm, textsize=small]{todonotes}
+
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}}
+
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+
+\renewcommand{\vec}[1]{
+\mathbf{#1}
+}
+
+\newcommand{\del}{
+\vec{\nabla}
+}
+
+\newcommand{\E}{
+\vec{E}
+}
+
+\newcommand{\B}{
+\vec{B}
+}
+
+
+\everymath{\displaystyle}
+
+%\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\hypersetup{
+  colorlinks = true,
+  linkcolor = blue,      % color of internal links
+  citecolor = blue,      % color of links to bibliography
+  filecolor = magenta,   % color of file links
+  urlcolor = blue,       % color of external links
+}
+
+\setcounter{secnumdepth}{2}
+
+
+\title{The Fundamental Equations of Hydrodynamics and Ideal Magnetohydrodynamics for Astrophysical Flows}
+
+\author[Prof. Robert Fisher]{Prof. Robert Fisher\thanks{The University of Massachusetts Dartmouth Department of Physics}\thanks{Heidelberg Institute for Theoretical Studies (HITS), Sabbatical 2023-24}}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+These notes present the fundamental equations of hydrodynamics and ideal magnetohydrodynamics (MHD) in the context of astrophysical flows. The equations are derived from conservation laws and provide a mathematical framework for numerical simulations of astrophysical systems, including stars, accretion disks, and the interstellar medium. The notes aim to serve as a concise introduction for students and researchers in the field of astrophysical fluid dynamics.
+\end{abstract}
+
+\newpage
+
+
+\section{Systems of Conservation Laws}
+
+Modern astrophysical simulation methods are all grounded within a single classical framework of the governing partial differential equations of fluid mechanics and magnetohydrodynamics. 
+
+\iffalse
+These governing equations can be expressed in a single compact and fully covariant equation for the relativistic stress-energy tensor $T_{\mu \nu} $ of a fluid:
+
+\begin {equation}
+\boxed {{\partial \over \partial x^{\mu} } T_{\mu \nu} = 0}
+\end {equation}
+%
+Here $x^\mu$  includes both the time (0) and spatial ($i$ = 1 - 3) coordinates.
+
+Given the material and energy contributions to the fluid (including rest mass and relativistic kinetic energy, electromagnetic energy, and so on) this single equation can be unpacked into equations for mass continuity, momentum conservation, and energy conservation in the non-relativistic limit, yielding the classical Navier-Stokes and Euler equations for viscid and inviscid fluids, respectively. This approach has a fundamental elegance, since it emphasizes that it is the time ${\partial / \partial x^0} = 0$ and space translation invariance ${\partial / \partial x^{i} }= 0$ of a system that generate the conservation laws and give rise to the fluid equations. 
+\fi
+
+In the following, we will first undertake a systematic approach to the fluid equations, developing a physically-grounded intuition about the physics involved. 
+
+%We will then return to the supreme elegance of this relativistic formulation.
+ 
+\subsection{Continuity Equation in 1D}
+
+Assume mass density (mass/length) of a 1D system is  defined at each point in space along the $x$ axis. Write the total mass within $[x_a,x_b]$  at time $t$ as $M_{ab}(t)$
+
+%\begin{enumerate}[label = \roman*.]
+%\begin{enumerate}
+%    \item
+     \begin{equation}
+        \int_{x_a}^{x_b} \rho ({x},t)~\mathrm{d}x = \text{Mass within }[x_a,x_b] \text{ at time }t \equiv M_{ab}(t)
+    \end{equation}
+%\end{enumerate}
+%
+ \marginnote{The  $\equiv$ symbol simply means an equivalence by definition. Here it is used to denote that this expression defines $M_{ab}(t)$.}
+
+{\bf If} the system is {\bf flux-conservative}, then {\bf no mass is added or lost within the spatial interval $[x_a,x_b]$ apart from that mass which flows into or out of this region}, and we can write
+
+\begin{align}
+\frac{\mathrm{d}}{\mathrm{d}t }~\int_{x_a}^{x_b} \rho (\vec{x},t)~\mathrm{d}x & = \frac{\mathrm{d}M_{ab}(t)}{\mathrm{d}t } \\
+& \equiv f(x_a,t) - f(x_b,t)
+\end{align}
+
+To find the {\bf total} change of mass in $[x_a,x_b]$ over a time interval, integrate this equation in time and apply the fundamental theorem of calculus:
+
+\begin{equation}
+\int_{t_1}^{t_2} \frac{\mathrm{d}}{\mathrm{d}t } \left[ \int_{x_a}^{x_b} \rho (\vec{x},t)~\mathrm{d}x \right]  = \int_{t_1}^{t_2} \left[ f(x_a,t) - f(x_b,t) \right]~\mathrm{d}t 
+\end {equation}
+
+\begin {equation}
+\qquad \int_{x_a}^{x_b} \rho (x,t_2) - \int_{x_a}^{x_b} \rho (x,t_1)  =  \int_{t_1}^{t_2} \left[ f(x_a,t) - f(x_b,t) \right]~\mathrm{d}t 
+\end {equation}
+
+%\begin {equation}
+%M_{ab}(t_2) - M_{ab}(t_1) =   \int_{t_1}^{t_2} \left[ f(x_a,t) - f(x_b,t) \right]~\mathrm{d}t
+%\end {equation}
+%hypertarget{star}{(*)} %=  \int_{t_1}^{t_2} \left[ f(x_a,t) - f(x_b,t) \right]~\mathrm{d}t
+%\end{align}
+
+The left-hand side of this equation is the total change of the conserved mass within the interval  $[x_a,x_b]$, $M_{ab}(t_2) - M_{ab}(t_1)$. Note that the right-hand side of this equation represents the time-integrated flux around the boundary of the region  $[x_a,x_b]$. {\bf In other words,  one only needs to know the time-integrated fluxes over some time interval around a fixed boundary of a region to determine the change in the conserved quantity within the boundaries.}  As we will see, this seemingly trivial statement is in fact the foundational basis of all modern numerical methods for systems of conservation laws.  
+
+If $\rho (x, t)$ and $f (x, t)$ are $C^1$, and both anti-derivatives in space and time are defined (in the Riemann-integrable sense), then by the second fundamental  theorem of calculus (Newton-Leibnitz):
+
+\begin{align}
+\rho(x,t_2) - \rho(x,t_1) & = \int_{t_1}^{t_2} \frac{\partial}{\partial t}\rho(x,t)~\mathrm{d}t \\
+f(x_a,t) - f(x_b,t) & = \int_{x_a}^{x_b}\frac{\partial}{\partial x}f(x,t)~\mathrm{d}x
+\end{align}
+
+\begin{equation}
+\int_{t_1}^{t_2}\int_{x_a}^{x_b} \left[ \frac{\partial}{\partial t}\rho(x,t) + \frac{\partial}{\partial x}f(x,t)  \right]~\mathrm{d}x\mathrm{d}t = 0
+\end{equation}
+
+Because this equation holds for any $x_a$, $x_b$ and $t_1$ , $t_2$, the integrand must be identically zero\footnote{The formal mathematical justification for this comes from the duBois-Reymond lemma, which has a very simple proof, which can be sketched out as follows. If the integrand is continuous ($C^0$) and {\it does not} identically vanish, then one can pick some neighborhood surrounding a point in which the integrand has the same sign, and therefore a non-zero integral, establishing the result by proof by contradiction. See Lin \& Segel, ``Mathematics applied to deterministic problems in the natural sciences,'' \S 4.1.}:
+
+\begin{equation}
+    \frac{\partial}{\partial t}\rho(x,t) + \frac{\partial}{\partial x}f(x,t) = 0
+\end{equation}
+
+This is known as the continuity equation in physics. 
+
+\subsection{Hydrodynamical Equations in Multiple Dimensions}
+
+In $D$ dimensions, we can generalize the arguments above to consider a $D$-dimensional volume rather than a line.  \marginnote{In $D$ dimensions, the mass density  has dimensions of mass per length$^D$, and flux is a vector $\vec {f}$ with dimensions of mass per time per length$^{D-1}$.} The total mass per unit time $dM / dt$ flowing through the surface area $A$ bounding the region $V$ is simply the dot product of the mass flux with the surface area vector:
+
+
+\begin{equation}
+      {d M \over dt}  =  - \int_A  \vec {f} \cdot ~\mathrm{d}\vec {A} =  - \int_V  \del \cdot  \vec {f}  ~\mathrm{d} {V} 
+\end{equation}
+%
+Here, the second equality follows from the divergence theorem, again assuming that $\rho \vec {v}$ is sufficiently smooth that its divergence can be calculated.  Note that the negative sign arises because $\vec {f} \cdot ~\mathrm{d}\vec {A} > 0$ represents a mass outflux through the volume $V$. 
+
+The total mass contained in the volume $V$ is simply
+
+\begin{equation}
+     M =  \int_V  \rho ~\mathrm{d} {V} 
+\end{equation}
+
+So the rate of change of the mass inside $V$  is simply
+
+\begin{equation}
+     {d M \over dt} =  {d \over dt} \int_V  \rho ~\mathrm{d} {V}   =  \int_V  {\partial \rho \over \partial t} ~\mathrm{d} {V} 
+\end{equation}
+
+Now we have two independent ways of writing $ d M /  dt$. These can be equated, and after application of the Reymond-duBois lemma, yield the continuity equation in multiple dimensions:
+
+
+
+\begin{equation}
+    \frac{\partial}{\partial t} \rho(\vec{x},t) + \del\cdot \vec{f}(\vec{x},t) = 0
+\end{equation}
+
+If sources or sinks are present, they can be modeled by terms on the right hand side (``source terms''). Even though the continuity equation is a first-order partial differential equation, it admits discontinuous ``weak solutions'' which satisfy the integral form of the conservation law \hyperlink{star}{(*)}, and are not differentiable. These solutions may, however, no longer be unique.\footnote{It is easy to understand why. We are typically interested in the inviscid Euler hydrodynamic equations, which formally admit both compressible shocks as well as their time-reversal, rarefaction shocks. Clearly, only the former are the correct limit as the viscosity approaches zero; the latter violate the second law of thermodynamics, and also lead to unconditional numerical instabilities when simulated.} For example, shock fronts need an ``entropy condition'' to ensure uniqueness (see Leveque ``Numerical Methods for Conservation Laws," \S 3.8 for a short overview, and Simon \& Reed, ``Methods of Modern Mathematical Physics I : Functional Analysis " \S V.4 for a more rigorous introduction). 
+
+For mass continuity, $\vec{f} (x,t)=\rho (x,t) \vec{v}(x,t)$, so we obtain our first fundamental fluid equation:
+\begin{equation}
+\boxed {\frac{\partial \rho}{\partial t} + \del\cdot (\rho\vec{v}) = 0}
+\label {eqn:continuity}
+\end{equation}
+%
+Note that for clarity, we have dropped the functional dependence on position and time. From here forward, and in the literature in general, the spatial and time dependence of the state quantities is generally assumed (eg, $\rho$ in place of $\rho (x, t)$).
+
+Next, let's consider both momentum conservation and energy conservation. We can, for example, write the total momentum $\vec {p}$ within some volume $V$ as the volume integral of the momentum density $\rho \vec {v}$:
+
+\begin{equation}
+\vec{p} = \int_V \rho \vec{v}~\mathrm{d}V
+\end{equation}
+
+Momentum flux in the $i-$direction out of the volume $V$:
+\begin{equation}
+    \vec{f}_p = \oint \rho \vec{v} \sum_i v_i~\mathrm{d}S_i
+\end{equation}
+%
+Note that frequently in physics texts, terms with repeated indices are assumed to be summations over these indices (as with $i$ here) according to the convention called Einstein summation notation. For clarity we will include the summations explicitly.
+
+Next, let's decompose the force acting on this fluid element into force per unit volume (body force) and surface force per unit area. 
+
+\begin{equation}
+    F_{d,i} = \int_V F_{v,i}~\mathrm{d}V + \oint \sum_j \sigma_{ij}~\mathrm{d}S_j
+\end{equation}
+
+$\sigma_{ij}$ is the \textit{stress tensor}. Pascal's law tells us that $\sigma_{ij}$ should be diagonal, with the form for an ideal (zero viscosity, zero conductivity) fluid:
+
+\begin{equation}
+\text{stress }\vec{T}(\vec{x},\hat{n}) = \sum_j\sigma_{ij}n_j \equiv \left\{ \sigma_{ij} = \begin{pmatrix}
+    -p & 0 & 0 \\
+    0 & -p & 0 \\
+    0 & 0 & -p
+\end{pmatrix} \right\}
+\end{equation}
+Where $\sigma_{ij}=-p\delta_{ij}$. Because trace is an invariant property, the stress tensor is diagonal in all coordinate systems for an ideal fluid. Writing this out in terms of the momentum density $\vec{p}$  and force density $\vec{f}_p$,
+
+\begin{equation}
+\int_V \frac{\partial(\rho {v}_i)}{\partial t}~\mathrm{d}V + \oint_S \rho v_i \sum_j v_j~\mathrm{d}S_j = \int_V F_{v,i}~\mathrm{d}V + \oint \sum_j \sigma_{ij}~\mathrm{d}S_j
+\end{equation}
+
+The divergence theorem applied to the surface integrals, along with the stress tensor $\sigma_{ij}=-p\delta_{ij}$ for an ideal fluid then yields:
+
+\begin{equation}
+\int_V \left[ \frac{\partial(\rho {v}_i)}{\partial t} + \sum_j \frac{\partial(\rho {v}_iv_j)}{\partial x_j} \right]\mathrm{d}V = \int_V \left[ F_{v,i} + \sum_j \frac{\partial \sigma_{ij}}{\partial x_j} \right]\mathrm{d}V
+\end{equation}
+
+Or, rearranging terms,
+
+\begin{equation}
+\int_V \left[ \frac{\partial(\rho {v}_i)}{\partial t} + \sum_j \frac{\partial(\rho {v}_iv_j)}{\partial x_j} - F_{v,i} - \sum_j \frac{\partial \sigma_{ij}}{\partial x_j} \right]\mathrm{d}V    = 0
+\end{equation}
+
+Because this result applies to any volume $V$, this means the integrand must be zero\footnote{This again follows from the duBois-Reymond lemma.}, which implies
+
+\begin{equation}
+\frac{\partial(\rho {v}_i)}{\partial t} + \sum_j \left (  \frac{\partial(\rho {v}_i {v}_j)}{\partial x_j} + \frac{\partial p}{\partial x_j} \delta_{ij} \right) = F_{v,i} 
+\end{equation}
+
+The momentum equation can then be recast into conservative form, including the divergence of the momentum flux density tensor $\Pi_{ij}$ and the remaining body force $F_{v,i}$ as a source term:
+\begin{equation}
+\boxed {\frac{\partial(\rho {v}_i)}{\partial t} + \sum_j \frac{\partial \Pi_{ij}} {\partial x_j} = F_{v,i} }
+\label{eqn:momentum_equation}
+\end{equation}
+%
+The momentum flux density tensor $\Pi_{ij}$ is then seen to be $\Pi_{ij} = p \delta_{ij} + \rho v_i v_j$.
+
+Energy conservation for a fluid in a gravitational field,  can be shown to produce a very similar result, with the inclusion of both pressure ($p dV$) and  work due to body force ($ F_{v,i}  v_i $) terms: 
+
+\begin{equation}
+\boxed {\frac{\partial (\rho E)}{\partial t} + \sum_i  \frac{\partial (\rho E + p)v_i}{\partial x_i} = \sum_i F_{v,i}  v_i }
+\label {eqn:energy_equation}
+\end{equation}
+
+With body force source term $F_{v,i} = \rho g_i$:
+
+\begin{equation}
+{\frac{\partial (\rho E)}{\partial t} + \sum_i  \frac{\partial (\rho E + p)v_i}{\partial x_i} = \sum_i  \rho g_i v_i }
+%\label {eqn:energy_equation}
+\end{equation}
+where $\rho E=$ total energy density (total hydrodynamic energy per unit volume) $=\rho \epsilon_{\text{int}} + \frac{1}{2}\rho v^2$, $\epsilon_{\text{int}}=$ specific internal energy (internal energy per unit mass).
+
+\subsection{The Poisson Equation}
+
+The hydrodynamical equations utilize the gravitational acceleration $\vec {g}= -\nabla \Phi$ is the gravitational acceleration. The gravitational acceleration may sometimes be taken to be a spatial constant independent of location, for example in a planetary or stellar atmosphere. However, in a general self-gravitating system, the gravitational acceleration depends on all other masses, which are moving in time, and one must obtain the gravitational acceleration self-consistently. 
+
+To derive Poisson's equation in 3D, we start with Gauss's law for gravity, which states that the flux of the gravitational field $\mathbf{g}$ through a closed surface is proportional to the enclosed mass $M$. Mathematically, this is expressed as:
+
+\[
+\oint_S \mathbf{g} \cdot d\mathbf{A} = -4 \pi G M
+\]
+%
+where $d\mathbf{A}$ is the differential area element on the closed surface $S$, and $G$ is the gravitational constant.
+
+Substituting $\mathbf{g} = -\nabla \Phi$ into Gauss's law:
+
+\[
+\oint_S \nabla \Phi \cdot d\mathbf{A} = 4 \pi G M
+\]
+
+We apply the divergence theorem, which relates the flux of a vector field through a closed surface to the volume integral of the divergence of the field over the region enclosed by the surface:
+
+\[
+\oint_S \mathbf{F} \cdot d\mathbf{A} = \int_V \nabla \cdot \mathbf{F} \, dV
+\]
+
+Applying the divergence theorem to our expression:
+
+\[
+\oint_S \nabla \Phi \cdot d\mathbf{A} = \int_V \nabla \cdot \nabla \Phi \, dV
+\]
+
+The term $\nabla \cdot \nabla \Phi$ is the Laplacian of $\Phi$, denoted by $\nabla^2 \Phi$:
+
+\[
+\int_V \nabla^2 \Phi \, dV = 4 \pi G M
+\]
+
+The mass $M$ within volume $V$ can be expressed in terms of the mass density $\rho$:
+
+\[
+M = \int_V \rho \, dV
+\]
+
+Substituting $M$ into the volume integral:
+
+\[
+\int_V \nabla^2 \Phi \, dV = 4 \pi G \int_V \rho \, dV
+\]
+
+Rearranging everything to one side, we have:
+
+\[
+\int_V (\nabla^2 \Phi - 4 \pi G \rho) \, dV = 0
+\]
+
+Once again invoking  the duBois-Reymond lemma, if the integral of a function over any arbitrary volume is zero, then the integrand itself must be zero everywhere. Therefore, we obtain Poisson's equation:
+
+
+\begin {equation}
+\boxed {\nabla^2 \phi = 4 \pi G \rho}
+\label {eqn:Poisson}
+\end {equation}
+%
+Equation \ref {eqn:Poisson}, unlike the hyperbolic partial differential hydrodynamical Equations \ref {eqn:continuity}, \ref {eqn:momentum_equation}, and \ref {eqn:energy_equation} is an {\it elliptical} equation. One only needs to specify the distribution of mass $\rho (x, y, z, t)$ in space at some time $t$, along with boundary conditions on the potential $\phi$ across the edges of the domain, in order to solve for the potential $\phi$ at every point at a time $t$.  The gravitational acceleration is then directly computed from the gradient of the potential $\vec {g} = - \nabla \phi$. In most Eulerian codes, and even increasingly Lagrangian codes like smoothed particle hydrodynamics, the Poisson equation is solved to obtain the gravitational acceleration self-consistently.  Many fast and efficient methods exist to solve this equation, ranging from multipole expansions for nearly spherical distributions of matter, to fast Fourier transform (FFT) and multigrid methods for arbitrarily complex mass distributions.  The most efficient of these algorithms scale as $O(N \log N)$, where $N$ is the number of cells in the system. 
+
+Alternatively, instead of solving for the gravitational potential $\phi$, one can solve for the gravitational acceleration directly, by summing up all of the $N$ mass elements,\footnote {For a Lagrangian method discretized by mass, these mass elements are simply the particles, whereas for an Eulerian method, each cell is a separate mass element.}
+
+\begin {equation}
+\vec{g}(\vec{r}) = -G \sum_{i=1}^{N} \frac{m_i (\vec{r} - \vec{r}_i)}{|\vec{r} - \vec{r}_i|^3}
+\label {eqn:gravaccel}
+\end {equation}
+%
+Equation \ref {eqn:gravaccel} differs from \ref {eqn:Poisson} since it obtains the gravitational acceleration directly without the need to first find the gravitational potential $\phi$. While direct summation is conceptually simpler than a Poisson solve, it suffers from the drawback of having a computational complexity of order $O(N^2)$, since the summation over $N$ masses must be carried out to obtain $\vec {g}$ on each of the $N$ mass elements. 
+
+Intuitively, however, it makes sense that it should not be necessary to sum up every single mass element within a star or galaxy very distant from us -- it should suffice to simply treat the star or galaxy as a point mass, possibly with the lowest order quadrupole moment included -- in order to obtain an accurate estimation of its gravitational acceleration at our location. This idea is essentially the heart of the Barnes-Hut {\it tree gravity} algorithm, that quantifies when masses can be aggregated into approximate point masses from any given location, and when they need to be summed up individually.\footnote {The original Barnes \& Hut algorithm was featured in Nature in 1986, \url {https://doi.org/10.1038/324446a0}}  A novel element of the tree gravity algorithm is that it assembles particles into a tree hierarchy, which can be efficiently traversed and dynamically maintained using optimized algorithms developed in computer science, reducing the order of complexity of the scheme to $O(N \log N)$, competitive with the cost of the hydrodynamics update. 
+
+
+\subsection{The Equation of State}
+
+We have not yet said anything about what the hydrodynamical material is made of -- for example, whether it is hot ionized plasma, molecular hydrogen, or anything else, simply that it must be smooth and continuous. This is reflected in the underlying hydrodynamical equations themselves; the astute reader will have noticed that the pressure $p$ as used in Equation \ref {eqn:momentum_equation} and Equation \ref {eqn:energy_equation} is not yet defined. Thus, in addition to the fundamental equations of hydrodynamics, which follow directly from mass, momentum, and energy conservation, one must also specify how pressure depends upon density, temperature, and composition. The pressure as a function of these variables -- $p (\rho, T, X_i)$ -- is called {\it the equation of state} and is said to {\it close} the system of hydrodynamical equations.\footnote {One can equivalently choose the specific internal energy $e_{\rm int}$ instead of temperature as a state variable, yielding $p (\rho, e_{\rm int}, X_i)$. This is a convenient choice since the specific internal energy is easily obtained from the total energy density $\rho E$.}  Here, $X_i$ is the composition (by mass) of for the individual components of the gas, where $i$ is an index that runs over the component. Once the equation of state is specified, the system of hydrodynamical equations are complete. Given the initial conditions and the boundary conditions, the hydrodynamical equations can be advanced in time.
+
+The simplest possible choice for the equation of state is that of a polytropic gas.
+
+\begin {equation}
+p = K \rho^{\gamma}
+\end {equation}
+%
+Where $K$ is the polytropic constant, and $\gamma = c_p / c_V$ is the ratio of specific heats and constant volume and constant pressure, respectively. A polytropic gas is typically overly simplistic for most realistic astrophysical simulations, since it forces the gas to remain at constant entropy. Indeed, because the polytropic pressure is dependent only upon density and is completely independent of temperature, one does not need the energy Equation \ref {eqn:energy_equation} at all for a polytropic gas.  However, the assumption of constant entropy is generally inconsistent with supersonic flows, which generally lead to an increase in entropy across shocks. Even when flows are subsonic, the polytropic assumption may still not apply. For example, in a convective region inside a star, the convection is driven by slight entropy gradients by Schwarzschild's criterion. Such entropy gradients are not possible within polytropic flows. 
+
+The next least restrictive assumption for the equation of state is an ideal gas, which can be written in intensive form as
+
+\begin {equation}
+p =  n k T = (\gamma - 1) \rho e_{\rm int}
+\end {equation}
+%
+Where $n$ is the total number density of all species, $k$ is Boltzmann's constant, and $\gamma = c_p / c_V > 1$ is the ratio of specific heats at constant volume and constant pressure, respectively. Note that this expression breaks down for the case of an isothermal gas ($\gamma = 1$). The reason for the breakdown is clear -- from statistical mechanics, the ratio of specific heats is related to the number of internal degrees of freedom $n$ for an ideal gas, $\gamma = (n + 2) / n$. In the limit that $\gamma \rightarrow 1$, the number of internal degrees of freedom $n \rightarrow \infty$.  An ideal gas can either be approximated as an adiabatic gas in the limit $\gamma \rightarrow 1$ while still including the energy equation, or exactly as $p = \rho c_{\rm iso}^2$, where $c_{\rm iso}$ is the isothermal sound speed, and eliminating the energy equation. While the latter would appear to be simpler, in practice one may only have access to hydrodynamics solvers for an adiabatic gas, making the former frequently advantageous. 
+
+These ideal equations of state are, however, only rough approximations to the {\it real equations of state} applicable to stellar interiors. One of the most commonly-used equations of state for stellar interiors is the so-called {\it Helmholtz equation of state} developed by Frank Timmes. The Helmholtz equation of state begins with the assumption that the matter is completely ionized and in complete local thermodynamic equilibrium. The latter assumption implies that all of the material and radiation fields (ions, electrons, positrons, and photons) have a well-defined local temperature, and all of these temperatures are equal to one another.  Helmholtz is designed to be applicable to conditions relevant to white dwarf densities and below, so it further assumes that the ions are ideal (non-degenerate and non-relativistic), while the electrons and positrons may be both relativistic and degenerate. In sum, it includes pressure contributions from non-relativistic ions, electrons and positrons (with an arbitrary degree of degeneracy and relativity), and thermal blackbody photons. All of these contributions can be written out and computed analytically, but such a computation would be extremely slow for a hydrodynamics simulation where the pressure and related thermodynamic quantities must be computed at least once per timestep. To speed the computations up, Helmholtz tabulates the Helmholtz free energy and its derivatives across an extremely wide range of densities ($10^{-12} - 10^{15}$ g cm$^{-3}$), temperatures $10^3 - 10^{11}$ K, and compositions \footnote {Though Helmholtz can be only trusted for a much smaller range of conditions; see below}, and uses these pre-tabulated quantities to rapidly compute the adiabatic exponents and ratios of specific heats needed for hydrodynamics and nuclear reactions, respectively. We note that the equation of state depends only upon one composition parameter, the ratio of electrons to baryons $Y_e = n_e / (n_n + n_p)$, sometimes called the electronic molar fraction, which is typically close to 0.5 for white dwarfs, but shifts to the neutron-rich side ($Y_e < 0.5$) in the context of core collapse supernovae and neutron stars. 
+
+The equation of state at white dwarf densities and below is well-understood as the consequence of relatively simple physics as we have described. However, the underlying assumption of ideal ions begins to break down at higher densities, and one must move beyond the Helmholtz equation of state when treating matter at nuclear densities relevant to core collapse supernovae, neutron stars, collapsing white dwarfs, and similar systems.  The equation of state of nuclear matter becomes increasingly uncertain, particularly near the central densities of neutron stars $\sim 10^{15}$ g cm$^{-3}$, and is an active area of research both for nuclear physicists and astrophysicists. The Lattimer-Swesty and Shen equations of state (see Fig. \ref {fig:lattimer}) are among the most widely-employed equations of state in nuclear astrophysics applications under these conditions.
+
+\begin{marginfigure}
+  \includegraphics[width=\linewidth]{lattimer.png}
+  \caption{A plot of the $\gamma_c$ value returned by the Lattimer-Swesty equation of state, as a function of density (g/cm$^{-3}$) and temperature (MeV) for $Y_e = 0.5$. Note that the value of $\gamma_c$ differs significantly from that of an ideal  relativistically degenerate  ($\gamma_c = 4/3$) gas, as is often assumed in simplified treatments of the neutron star mass in introductory astrophysics classes. Also note the sharp increase in the ``stiffness'' of the equation of state as the density approaches nuclear density values  $\sim 10^{15}$ g cm$^{-3}$, responsible for the ``bounce'' that occurs in core collapse supernova simulations.  The softening of the equation of state along the ``ridge'' is due to the formation of nuclei.  (courtesy Todd Thompson, PhD thesis) }
+  \label{fig:lattimer}
+\end{marginfigure}
+
+
+We mentioned that the Helmholtz and nuclear equations of state are  {\it real} equations of state. A consequence of such a real equation of state is that two adiabatic exponents, $\gamma_e$ and $\gamma_c$, can be identified from the pressure $p = (\gamma_e - 1) \rho e_{\rm int}$ and sound speed relations $c_s = \left ( \gamma_c p / \rho  \right)^{1/2}$. For an ideal equation of state, it is easy to show that these two exponents are the same, $\gamma_c = \gamma_e$. In a real equation of state, including both Helmholtz and other nuclear equations of state, the adiabatic exponents will in general differ, and the numerical hydrodynamics solvers  employed will generally require both. As a consequence, the solvers must be carefully crafted to self-consistently utilize the appropriate exponents  in precisely the correct locations. When the coarser approximation of an ideal equation of state is made by researchers, frequently the underlying reason is the absence of such a self-consistent numerical hydrodynamics solver in the code being used.
+
+\subsection{A Remark on the Derivation of the Equations of Fluid Mechanics and the Connection to Hilbert's Sixth Problem}
+
+
+In our approach to deriving the equations of fluid mechanics, we have adopted a macroscopic point of view of the system -- that is, we do not begin with the underlying atomic structure of matter, and instead simply assume the existence of a continuous fluid material.  There are other routes to the equations of fluid mechanics which begin with the underlying microscopic description of the atomistic structure of matter. One of the most rigorous begins with the more fundamental Boltzmann equation for distribution functions of a system of interacting particles in non-equilibrium statistical mechanics, and from this derives an infinite hierarchy of equations,  using the Chapman-Enskog procedure derived by Hilbert, Chapman, and Enskog, or the BBGKY hierarchy, developed by Bogoliubov, Born, Green, Kirkwood, and Yvon. The Chapman-Enskog procedure assumes a perturbative expansion about a thermalized solution, which breaks down in some cases -- for example, near shock interfaces. The procedure nonetheless establishes key relations between viscous and diffusive coefficients, among others. The BBGKY hierarchy is non-perturbative relation between $N$ particle distribution functions, but some additional assumptions are needed to close the otherwise infinite system of equations and yield the Navier-Stokes (or Euler) equations of fluid mechanics.
+
+These approaches address one part of  Hilbert's famous sixth problem, which aimed to axiomatize all of physics.  As a first step in this bold program, Hilbert suggested obtaining ``mathematically the limiting processes [...] which lead from the atomistic view to the laws of motion of continua." Hilbert's sixth problem, even in the special case of the Navier-Stokes or Euler equations, is considered largely unsolved from a mathematically rigorous standpoint still today. \footnote {See this \href{https://www.quantamagazine.org/famous-fluid-equations-are-incomplete-20150721/} {Quanta Magazine article} for a well-written popular introduction to mathematical issues related to the fluid equation derivations, and \href {https://arxiv.org/abs/1803.03599} {A. Gorban, 2018} or \href {https://doi.org/10.1090/bull/1650 }{I. Gallagher, 2019}, for more technical discussions. The Gorban reference is the introduction to an entire volume dedicated to Hilbert's sixth problem.}  Surprises continue to be found, particularly in the low density regime when the particle mean free path length is not much smaller than the length scales of interest. It is unclear what impact if any these mathematical developments have upon actual astrophysical processes; in some applications, the fluid approximation breaks down, and one must resort to a plasma physics treatment utilizing the full Boltzmann equations. In all likelihood, any breakdown will occur in extremely tenuous plasmas, and so for our discussion of stellar astrophysics, we will simply assume the validity of the Euler equations.
+
+\vfill\eject
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  New section on MHD
+%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Magnetohydrodynamics}
+Ideal MHD is an effective theory, reduced from full plasma physics. The simplest theory of {\it ideal MHD} makes several key assumptions:
+\begin{enumerate}
+    \item Fluid approximation \textemdash local thermodynamic quantities can be defined in the plasma, and important fluid variations are longer and slower with respect to microscopic plasma processes. For example, important fluid scales are much larger than the gyroradius and slower than the gyrofrequency. We also assume that all fluid quantities are spatially continuous, as we did for the fluid equations.
+
+    \item In a plasma, Ohm's Law locally and instantaneously relates the electric field and current. Ideal MHD further assumes perfect conductivity. 
+
+    \item The plasma is completely ionized and is charge neutral.
+
+    \item The flow is non-relativistic (terms of order $\frac{v^2}{c^2}$ and higher can be dropped).
+\end{enumerate}
+%
+Each of these assumptions can be relaxed depending on the application at hand. For example, in regions around neutron stars or black holes, one can develop special relativistic (or even general relativistic) MHD which drops the last assumption entirely. One may also include finite resistivity and  partial ionization in dense regions of molecular gas in star forming regions, resulting in the two fluid or the Hall MHD approximations. In these notes, however, we will focus on the case of  ideal MHD of a single fluid, which hold to an excellent degree of approximation within stellar interiors as we discuss below.
+
+\subsection{The Displacement Current}
+
+Let us consider Ampere's Law:
+
+\begin{equation}
+\vec{\nabla} \times \vec{B} = \frac{4\pi }{c}~\vec{j}_e + \frac{1}{c}~\frac{\partial\vec{E}}{\partial t}
+\end{equation}
+where $\vec {E}$ and $\vec {B}$ represent the electric and magnetic fields, respectively, $j_e$ is the electric current density, $\frac{1}{c}~\frac{\partial\vec{E}}{\partial t}$ is the displacement term.
+%
+\footnote {Note that we utilize Gaussian electromagnetic units -- see appendix for a comparison of Gaussan and SI electromagnetic units.}
+
+%Compare magnitude of displacement term to $\del \times \vec{B}$ and 
+
+Consider the Lorentz transformation of $\E$ and  $\B$. Let's notate the center-of-mass frame in which the fluid is locally at rest as the primed frame. The lab frame, boosted at the fluid velocity $ \vec {v}$ relative to the center-of-mass frame, will be written as the unprimed frame.
+
+\begin{align}
+\E_{\parallel}^{\prime} & = \E_{\parallel} \\
+\B_{\parallel}^{\prime} & = \B_{\parallel} \\
+\E_{\bot}^{\prime} & = \gamma \left( \E_\bot + \frac{\vec{v}}{c} 
+\times \B  \right) \\
+\B_{\bot}^{\prime} & = \gamma \left( \B_\bot - \frac{\vec{v}}{c} \times \E  \right)
+\end{align}
+
+Here, the parallel and perpendicular components refer to the components parallel and perpendicular to the velocity, eg,  $\E_\parallel = (\E \cdot \vec{v})\hat {v}$, and $\E = \E_\parallel + \E_\bot$, where $\hat {v}$ is the unit vector in the direction of the velocity vector, $\hat {v} = \vec {v} / v$.  Then we can write the Lorentz transformation as a single vector transformation:
+%An equivalent transformation uses $\E = \E_\parallel + \E_\bot$, $\E_\parallel = (\E \cdot \vec{v})$
+
+\begin{align}
+\E^\prime & = \gamma \left( \E + \frac{\vec{v}}{c} 
+\times \B  \right) - (\gamma - 1) \left(\E \cdot \hat {v}   \right) \hat{v} %\\
+%\E^\prime & = (\E \cdot \vec{v})\hat{v} + \gamma \left[ {(\E - \E_\parallel)} + \frac{\vec{v}}{c}\times \B   \right]
+\end{align}
+%
+
+
+But, this transformation is fully Lorentz invariant, while the non-relativistic fluid equations are {\it only Galilean invariant}. Therefore, expand $\gamma$ in $v/c$
+
+\begin{align}
+    \gamma & = \frac{1}{\sqrt{1-\frac{v^2}{c^2}}} \simeq 1 + \frac{1}{2} ~ \frac{v^2}{c^2} \simeq 1 + \mathcal{O}\left(\frac{v^2}{c^2}\right)
+\end{align}
+
+To terms $\mathcal{O}\left(\frac{v^2}{c^2}\right)$,
+
+\begin{align}
+    \E^\prime & = \E + \frac{\vec{v}}{c} \times \B  \\
+    \B^\prime & = \B 
+\end{align}
+
+In a perfectly conducting charge-neutral medium, $\abs{\E^\prime}=0$ in the center-of-mass frame, since charges can freely move to cancel out the electric field.  To see this slightly more formally, write Ohm's law in terms of the electric currrent $\vec {j}_e^\prime$ in the center-of-mass frame as $\vec {j}^\prime_e = \sigma \vec {E}^\prime$. Then, 
+
+\begin{align}
+\E & = \E^\prime - \frac{\vec{v} }{c}\times \B = \frac{\vec{j}_e^\prime}{\sigma} - \frac{\vec{v}}{c}\times \B 
+\end{align}
+
+As we will learn later in \S \ref {sec:alfven},  for a perfectly conducting fluid, the magnetic field remains frozen into the fluid. For finite conductivity $\sigma$, the magnetic field will not remain frozen into the fluid, but will instead diffuse outwards. We can therefore ask ourselves what might happen in a perfect conductor. Just as with any diffusion process, the timescale $\tau$ scales quadratically with the length scale $L$: $\tau = 4 \pi \sigma L^2 / c^2$.\footnote {See J.D. Jackson Electrodynamics, 2nd edition, \S 10.3.} The question of whether non-ideal conductivity is needed or not therefore amounts to a question of whether we are interested in timescales comparable to $\tau$ or not. %A 1 cm sphere of copper has $\tau \sim 1$ s, but f
+For the center of a white dwarf with $\sigma \sim 10^{22}$ s$^{-1}$ and a length scale set by its radius, $L = 5 \times 10^3$ km, the timescale to diffuse the field through to the surface exceeds the Hubble time, $\tau \sim 10^{12}$ yr.\footnote {See https://arxiv.org/abs/astro-ph/9604165 for a calculation of the conductivity.} Even if we were to consider a small chunk of the interior with $L = 1 $ km, $\tau \sim 5 \times 10^4$ yr. Generally speaking, the diffusion timescales for stellar interiors is tremendously longer than the timescales we would be interested in simulating over a dynamical timescale, and the ideal conductor assumption is well-justified. In some phases of the interstellar medium, such as  the partially-ionized molecular gas within giant molecular clouds, non-ideal MHD effects are important even over a dynamical timescale of the cloud.
+
+ For a perfect conductor, $\sigma\to \infty$, and the Ohmic term on the right can be dropped.
+\begin{align}
+    \E & = - \frac{\vec{v}}{c} \times \B 
+\end{align}
+
+
+This implies an electric field  $\abs{\E}=\frac{v}{c}\ \abs {\vec {B}}$ in the lab frame. We can estimate the relative magnitude of the displacement term in terms of a characteristic timescale $\tau$ of the variation of the fields:
+
+\begin{align}
+\frac{1}{c}~\abs{\frac{\partial \E}{\partial t}} & \simeq \frac{1}{c}~\frac{E}{\tau} \simeq \frac{1}{c}~\frac{v}{c}~\frac{B}{\tau}
+\end{align}
+
+Let's compare this term with $\del \times \B$, writing the characteristic lengthscale of gradients as $L$ and the characteristic dynamical timescale $\tau \sim L / v$, 
+\begin{align}
+\frac{\displaystyle\frac{1}{c} \abs{\frac{\partial \E}{\partial t}} }{\abs{\del \times \B}} & \simeq \frac{\displaystyle\frac{1}{c}~\frac{v}{c}~\frac{B}{\tau}}{\displaystyle\frac{B}{L}} \simeq \frac{v}{c^2}~\frac{L}{\tau} \simeq \frac{v^2}{c^2}
+\end{align}
+%
+
+So the displacement term can be neglected, and one obtains
+\begin{align}
+    \del \times \B & = \frac{4\pi}{c}\vec{j}_e
+\end{align}
+
+Or, in other words, non-relativistic ideal MHD current densities are always obtainable directly from the magnetic field:
+\begin{align}
+    \vec{j}_e &= \frac{c}{4\pi}~\del \times \B 
+\end{align}
+%
+In ideal MHD, the magnetic field takes center stage. Both the electric field and the current density take a less direct role than in the full Maxwell theory, though current densities are often a nice way to visualize the dynamics of the magnetic field. 
+
+Furthermore, 
+\begin{align}
+    \del \cdot \vec{j}_e & = \frac{c}{4\pi}~\del \cdot \left(\del \times \B \right) = 0
+\end{align}
+
+Non-relativistic MHD currents always close upon themselves, and have no local sources or sinks. 
+% in 2D, and closing of currents not an issue in 3D.
+
+The drift velocities are also typically negligible between ions and electrons. Let's write the electric charge density as $\rho_e$, so as not to confuse it with the mass density $\rho$:
+
+\begin{equation}
+\rho_e = \bar {Z} e n_i - en_e = 0 \quad \text{by charge neutrality}
+\end{equation}
+%
+Here $\bar {Z}$ is the ionic mean (weighted by number) charge. It follows that $n_i = n_e / \bar {Z}$ in any charge-neutral medium. 
+
+Now we reach a somewhat subtle but tremendously important point about the physical origin of the fields in the ideal MHD approximation. Namely, {\it even though the fluid is assumed to be charge neutral, an ionized fluid can still possess an electric current due to the drift current between the ions and electrons}. If the mean velocity of the electrons $\vec{v}_e$ differs from the ions $\vec{v}_i$, the net electric current density $\vec {j}_e$ is
+\begin{align}
+\vec{j_e} & = \bar {Z}en_i \vec{v}_i - en_e \vec{v}_e \\
+& = en_e \vec{v}_i - en_e\vec{v}_e = en_e (\vec{v}_i - \vec{v}_e) = -en_e \vec{v}_e^\prime
+\end{align}
+%
+Here the drift velocity $\vec{v}_e^\prime =  (\vec{v}_i - \vec{v}_e)$ is the {\it drift velocity} of the ions with respect to the electrons. 
+
+Let's estimate the drift velocity $\vec{v}_e^\prime$ that arises in the photosphere of a high field magnetized white dwarf (HFMWD), a class of highly magnetized white dwarfs that are thought to originate at least in part from white dwarf mergers. Let's take the white dwarf to be 1 $M_{\odot}$, $R = 5800$ km, with a  DA (hydrogen-dominated) photosphere,  surface field $B \sim 10^9$ G, $\rho \sim 1$ g cm$^{-3}$, $n_e \sim 6 \times 10^{23}$ cm$^{-3}$, scale height $h \sim k T /  (m g) \sim 200$ m:
+
+\begin{align}
+\vec{j}_e & = \frac{c}{4\pi} ~\del \times \B  \\
+\abs{\vec{j}_e} & \simeq e n_e {v}_e^\prime \\
+\frac{c}{4\pi}~\abs{\del \times \B} & \simeq \frac{c}{4\pi}~\frac{B}{h} \\
+v_e^\prime &\simeq \frac{c}{4\pi e n_e}~\frac{B}{h} \simeq 1 ~\text{cm/s}
+\end{align}
+%where $n_e \sim 10^{23}~$cm$^{-3}$, $L\sim 2\times 10^{10}~$cm, and $B\sim 10^3~$G.
+
+Consequently, even a very strong gigagauss white dwarf magnetic field requires only a tiny drift velocity, far smaller than the fluid velocity or the sound speeds we are typically interested in simulating during dynamical processes.  Repeating the same estimate for a more typical stellar magnetic field, such as that observed in the solar photosphere, $n_e \sim 10^{23}~$cm$^{-3}$, $h\sim 2\times 10^{10}~$cm, and $B\sim 10^3~$G, one finds a fantastically small drift velocity $\sim 10^{-12}~\text{cm/s}$. When modeling stellar interiors, we therefore usually adopt the \textit{single fluid approximation} for MHD, and assume electrons and ions  are comoving with the same velocity, with effectively zero drift velocity, $v_e^\prime=0$. All fluid velocities will be written simply as $\vec {v}$.\footnote{This assumption needs to be relaxed in the low-ionization gas in protostellar disks and the interstellar medium.}
+
+\subsection{Induction Equation}
+
+From Faraday's Law,
+
+\begin{align}
+    \del \times \E & = - \frac{1}{c}~\frac{\partial \B}{\partial t} \\
+    \del \times \left( - \frac{\vec{v}}{c} \times \B  \right) & = - \frac{1}{c}~\frac{\partial \B}{\partial t} 
+%  \frac{\partial \B}{\partial t} & = \del \times (\vec{v} \times \B ) 
+\end{align}
+
+%In the single fluid approximation, ions and electrons are assumed to be comoving, so we can also write $\vec{v}_i=\vec{v}$, the single fluid velocity,
+This yields the magnetic induction equation governing the time evolution of the magnetic field in the ideal MHD approximation.
+
+\begin{equation}
+  \boxed{  \frac{\partial \B}{\partial t} = \del \times (\vec{v}\times \B ) }
+\end{equation}
+
+\subsection*{Alfvén Theorem}
+\label{sec:alfven} 
+The Alfvén Theorem states that in the ideal MHD approximation, the magnetic flux is ``frozen'' into comoving fluid elements. Writing the surface bounding a fluid element as $S$, the magnetic flux threading the element is $\Phi (S)$,
+
+\begin{align}
+    \Phi (S) & = \int_S \B \cdot \mathrm{d}\vec{S} \\
+    \frac{\mathrm{d}\Phi (S)}{\mathrm{d}t} & = 0
+\end{align}
+
+\begin{marginfigure}
+  \includegraphics[width=\linewidth]{current_sheets_dong18.png}
+  \caption{Current density from a high magnetic Reynolds number 2D MHD simulation at $P_m = 10^6$, showing reconnection and the formation of plasmoids \url {https://doi.org/10.1103/PhysRevLett.121.165101}.}
+  \label{fig:example}
+\end{marginfigure}
+
+The Alfvén Theorem has profound implications. Because the magnetic flux remains frozen to the fluid in the ideal MHD approximation, we can understand a myriad of complex physical effects simply and intuitively. As just one example, displacing the magnetic field perpendicular to its length generates a restoring magnetic field resulting from the magnetic tension force, and gives rise to incompressible MHD waves called Alfvén waves. 
+The Alfvén Theorem also implies that the magnetic field topology is unchanged in ideal MHD, and points to some inherent limitations of this set of approximations. Turbulent dynamos, for instance, necessarily require that the magnetic field cascading down to small length scales undergoes magnetic reconnection, which changes the topology of the field. At sufficiently high magnetic Reynolds number, turbulently folded magnetic sheets become extremely thin, and get chopped up, or reconnected,  into isolated islands of magnetic flux called ``plasmoids." 
+Reconnection is only possible in a resistive medium, which is formally beyond the ideal MHD approximation. However, numerical solutions of the ideal MHD equations also necessarily carry with them some finite {\it numerical} resistivity resulting from the discretization of the equations. This numerical resistivity can produce numerical reconnection, which mimics the effects of a physical resistivity.
+
+\vfill\eject
+
+
+
+
+\appendix
+
+\section  {A Note on SI and Gaussian  Units in Electromagnetism}
+
+\subsection {SI Units}
+
+When considering electromagnetism units, it is important to note that differing systems of units not only modify the physical units, but also the form of the equations themselves. In particular, there are multiple choices for electromagnetic units,  which are  manifest in  differences in the actual written form of Maxwell's equations. Consider Gauss's law, first in SI units, which has base dimensions of mass, length, time, and electric current (sometimes also called meters, kilograms, seconds, and Amperes units, or MKSA units).  The electric field due to a point charge is 
+
+
+\[
+\vec{E}_{\text{SI}} = \frac{1}{4\pi \epsilon_0} \frac{q_{\text{SI} } } {r^2}   \hat{r} 
+\]
+
+In SI, the unit of the charge is the Coulomb, [q$_{\text{SI} }$]=\text{C}.\footnote {The [] notation used here is an operator that returns the units of the expression contained within.} Heaviside referred to this system as ``rationalized'' units, since the $4\pi$ factor coming from spherical geometry is subsumed into the coupling constant in Coulomb's law. Consequently, the electric flux through a closed surface is
+\[
+\int \vec{\nabla} \cdot \vec{E}_{\text{SI}}~\mathrm{d}V = \frac{1}{\epsilon_0} \int \rho_{e\text{,SI}}~\mathrm{d}V
+\]
+\[
+\int \vec{E}_{\text{SI}}\cdot \mathrm{d}\vec{A} = \frac{1}{\cancel{4\pi}\epsilon_0}~\frac{q_{\text{SI}}}{\cancel{r^2}}~ 4\pi \cancel{r^2}  = \frac{q_{\text{SI}}}{\epsilon_0}
+\]
+
+%\[
+%\frac{1}{\cancel{4\pi}\epsilon_0}~\frac{q}{\cancel{r^2}}~ 4\pi \cancel{r^2} = \frac{q}{\epsilon_0} 
+%\]
+
+As a result, Gauss's law in SI units has no factors of $4 \pi$. The elimination of the geometric factors from Maxwell's equations in the older Gaussian unit system was in fact Heaviside's motivation in choosing rationalized units.
+
+%\textbf{Divergence of the electric field:}
+\[
+\vec{\nabla} \cdot \vec{E}_{\text{SI}} = \frac{\rho_{e\text{,SI}}}{\epsilon_0}
+\]
+\subsection {Gaussian Electromagnetic Units}
+
+In contrast, in Gaussian units, the base dimensions are chosen to be mass, length, and time.\footnote {The name ``Gaussian'' in fact goes all the way back to Gauss himself, who among numerous other achievements devised the first consistent system of electromagnetic units while undertaking geomagnetic measurements.} Electric charge and electric current are constructed from these base dimensions.  The electric field due to a point charge is written:
+
+\[
+\vec{E}_{\text{Gauss}}  = \frac{q_{\text{Gauss}} }{r^2} \hat{r}
+\]
+
+In Gaussian units, the unit of charge is the statcoulomb or franklin (named in honor of Benjamin Franklin), [q$_{\text{Gauss}}$] = statC or Fr $\simeq 3.3\times 10^{-10}~\text{C}$. Note that in Gaussian units, there is no factor of $4\pi$ in Coulomb's law. This is analogous to how we treat Newtonian gravity, so Sommerfeld called this system "conventional." 
+
+\[
+\int \vec{\nabla} \cdot \vec{E}_{\text{Gauss}}~\mathrm{d}V = 4\pi q_{\text{Gauss}}
+\]
+\[
+\int \vec{E}_{\text{Gauss}} \cdot \mathrm{d}\vec{A} =  \frac{q_{\text{Gauss}}}{\cancel{r^2}}~4\pi\cancel{r^2} = 4\pi q_{\text{Gauss}}
+\]
+
+%\[
+%\frac{q}{\cancel{r^2}}~4\pi\cancel{r^2} = 4\pi q_{\text{Gauss}}
+%\]
+
+The $4\pi$ geometric factor must instead be incorporated into Gauss's law:
+
+\[
+\vec{\nabla} \cdot \vec{E}_{\text{Gauss}} = 4\pi \rho_{e, \text{Gauss}}
+\]
+
+The appearance of the additional geometric factor in the more fundamental Maxwell equation is precisely what annoyed Heaviside and motivated him to develop rationalized units.
+
+
+
+%\begin{table}[H]
+%    \centering
+%    \renewcommand{\arraystretch}{2}
+%    \begin{tabular*}{\textwidth}{C{0.45\textwidth} | C{0.45\textwidth}}
+%         \textbf{``Rationalized'' SI} & \textbf{``Conventional CGS''}  
+
+%    \end{tabular*}
+%\end{table}
+
+%         $\vec{E} = \frac{1}{4\pi \epsilon_0} \frac{q}{r^2} \hat{r}$ & $\vec{E} =  \frac{q}{r^2} \hat{r}$ \\
+
+
+%         $[q]=$Coulomb & $[q] = $ statC or Fr $\simeq 3.3\times 10^{-10}~$C \\
+
+%        \multicolumn{1}{p{0.45\textwidth}|}{
+%        In rationalized units, the $4\pi$ factor coming from spherical geometry is subsumed into Coulomb's Law. Then,
+%       } & 
+%        \multicolumn{1}{p{0.45\textwidth}}{
+%        In conventional units, there is no factor of $4\pi$ in Coulomb's Law. This is analogous to how we treat Newtonian gravity, so Sommerfeld called this system ``conventional.'' The $4\pi$ geometric factor must instead be incorporated into Gauss's law:
+%        }  \\
+
+
+ %       $\int \vec{\nabla} \cdot \vec{E}~\mathrm{d}V = \frac{1}{\epsilon_0} \int \rho~\mathrm{d}V$ & 
+ %       $\int \vec{\nabla} \cdot \vec{E}~\mathrm{d}V = 4\pi q$ \\
+
+ %       $\int \vec{E}\cdot \mathrm{d}\vec{A}$ = $\frac{q}{\epsilon_0}$ &
+  %      $\int \vec{E}\cdot \mathrm{d}\vec{A} = 4\pi q$ \\
+
+ %       $\frac{1}{\cancel{4\pi}\epsilon_0}~\frac{q}{\cancel{r^2}}~ 4\pi \cancel{}{r^2} = \frac{q}{\epsilon_0} $ & 
+  %      $\frac{q}{\cancel{r^2}}~4\pi\cancel{r^2} = 4\pi q$ \\
+
+%        $\vec{\nabla} \cdot \vec{E} = \frac{q}{\epsilon_0} $ & $\vec{\nabla} \cdot \vec{E} = 4\pi q$ 
+         
+ %   \end{tabular*}
+%\end{table}
+
+
+The same situation extends to the other source terms in Maxwell's equations, the current density in Ampere's Law and the magnetic flux term in Faraday's Law:
+
+\begin{table}
+    \centering
+    \renewcommand{\arraystretch}{2}
+    \begin{tabular*}{0.9\textwidth}{ l @{\extracolsep{\fill}}  @{\extracolsep{\fill}}l }
+        \underline {\textbf{SI} }& \underline {\textbf{Gaussian} }\\
+
+    $\vec{\nabla}\times \vec{E}_{\text{SI}} = - \frac{\partial\vec{B}_{\text{SI}} }{\partial t}$ & $\vec{\nabla}\times \vec{E}_{\text{Gauss}} = - \frac{1}{c}~ \frac{\partial\vec{B}_{\text{Gauss}}}{\partial t}$ \\
+
+    $\vec{\nabla} \times \vec{B}_{\text{SI}}  = \mu_0 \vec{j}_{\text{SI}}  + \mu_0\epsilon_0 \frac{\partial\vec{E}_{\text{SI}} }{\partial t}$ & $\vec{\nabla} \times \vec{B}_{\text{Gauss}}  = \frac{1}{c} \left(4\pi \vec{j}_{\text{Gauss}} + \frac{\partial {\vec{E}}_{\text{Gauss}} }{\partial t}\right)$
+        
+    \end{tabular*}
+\end{table}
+
+\vspace {0.1 in}
+
+The additional factors of $c$ follow because $\frac{1}{\sqrt{\epsilon_0\mu_0}}=c$ and
+
+\begin{align}
+q_{\text{Gauss}}  & = \frac{q_{\text{SI}}}{\sqrt{4\pi \epsilon_0}} \\
+\vec {j}_{\text{Gauss}}  & = \frac{\vec {j}_{\text{SI}}}{\sqrt{4\pi \epsilon_0}} \\
+\vec{E}_{\text{Gauss}} & = \sqrt{4\pi \epsilon_0} ~\vec{E}_{\text{SI}}  \\
+\vec{B}_{\text{Gauss}} & = \sqrt{\frac{4\pi}{\mu_0}} \vec{B}_{\text{SI}}
+\end{align}
+
+This also leads to different forms for the Lorentz law in Gaussian and SI units:
+\begin{equation}
+    \vec{F}_{\text{SI}} = q_{\text{SI}} \left( \vec{E}_{\text{SI}} + \vec{v}\times \vec{B}_{\text{SI}} \right)
+\end{equation}
+with 
+\begin{equation}
+\vec{F}_{\text{Gauss}} = q_{\text{Gauss}} \left( \vec{E}_{\text{Gauss}} + \frac{\vec{v}}{c} \times \vec{B}_{\text{Gauss}} \right)
+\end{equation}
+
+
+In astrophysics, we typically rely upon Gaussian units, and so will exclusively utilize Gaussian equations, and drop the Gauss/SI subscripts with this understanding. 
+
+\end {document}
+
+
+
