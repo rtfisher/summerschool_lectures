@@ -9,8 +9,13 @@ This page contains background reading, source code files, and notes for Prof. Fi
 
 2. Download and install the FLASH-X open source hydrodynamics code framework using Docker. The docker container also installs the requisite MPI and HDF5 libraries needed to run FLASH-X, as well as the Python-based toolkit yt for analysis of the data output by FLASH-X. Make sure you have downloaded and installed Docker; the Docker Desktop is recommended for first time users (https://www.docker.com/products/docker-desktop/).
 
+> **Deprecated.** The FLASH-X Docker build described below is no longer maintained, and is
+> kept here only for reference alongside the 2024 lectures. Please use
+> [launch-compastro/flashx_docker](https://github.com/launch-compastro/flashx_docker)
+> instead, which supersedes it.
+
 - Save the Docker file as "flashx_dockerfile":
-  - [Download flashx_dockerfile](https://raw.githubusercontent.com/rtfisher/summerschool_lectures/main/flashx_dockerfile)
+  - [Download flashx_dockerfile](https://raw.githubusercontent.com/rtfisher/summerschool_lectures/main/docker/flashx_dockerfile)
 
 Be sure that the full path of the directory to which you downloaded the file contains no spaces, as this may cause the following process to fail.
 - Launch the Docker Desktop client. From the same directory where you have downloaded the Docker file, build the container and the code:
@@ -114,5 +119,41 @@ ffmpeg -i sedov_hdf5_chk_%04d_Slice_z_density.png -c:v libx264 -r 30 -pix_fmt yu
 
 The notes for Prof. Fisher's ICESUN lectures can be found here.
 
-- [Lecture Notes: "ICESUN Workshop Lecture Notes"](./fisher_icesun_lecture_notes.pdf)
+- [Lecture Notes: "ICESUN Workshop Lecture Notes"](./fisher_icesun_lecture_notes_typeset.pdf)
+- The original handwritten version of the same notes is archived at [archive/fisher_icesun_lecture_notes.pdf](./archive/fisher_icesun_lecture_notes.pdf).
 
+
+## Repository layout
+
+```
+hydro_equation_derivation.pdf              background reading (current)
+fisher_icesun_lecture_notes_typeset.pdf    lecture notes (current)
+
+tex/        LaTeX sources for the two documents above
+figures/    images used by those sources
+docker/     flashx_dockerfile (deprecated; see note above)
+archive/    superseded material: the July 2024 handout source and
+            the original handwritten lecture notes
+```
+
+### Rebuilding the documents
+
+The typeset lecture notes pull live equation numbers out of the hydrodynamics
+handout using the `xr` package, so **the handout must be built first** or those
+references render as `??`. Running `make` from the repository root handles the
+ordering and copies the resulting PDFs back to the top level:
+
+```
+make          # build both documents and refresh the PDFs at the root
+make clean    # remove LaTeX build artifacts
+```
+
+Building by hand instead:
+
+```
+cd tex
+for i in 1 2 3; do pdflatex hydro_equation_derivation.tex; done
+for i in 1 2 3; do pdflatex fisher_icesun_lecture_notes_typeset.tex; done
+```
+
+Three passes are needed for the table of contents and cross-references to settle.
