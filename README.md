@@ -11,7 +11,7 @@ This page contains background reading, source code files, and notes for Prof. Fi
 
 > **Deprecated.** The FLASH-X Docker build described below is no longer maintained, and is
 > kept here only for reference alongside the 2024 lectures. Please use
-> [launch-compastro/flashx_docker](https://github.com/launch-compastro/flashx_docker)
+> [rtfisher/flashx_docker](https://github.com/rtfisher/flashx_docker)
 > instead, which supersedes it.
 
 - Save the Docker file as "flashx_dockerfile":
