@@ -299,7 +299,7 @@ which is the Kolmogorov length scale. The ratio of the large-scale integral driv
 The Reynolds number is normally introduced as the ratio of the importance of inertial to viscous forces
 
 \begin{equation}
-\frac{\partial (\rho v_i)}{\partial t} + \sum_j \left( \frac{\partial \Pi_{ij}}{\partial x_j} + \frac{\partial S_{ij}}{\partial x_j} \right) = 0
+\frac{\partial (\rho v_i)}{\partial t} + \sum_j \left( \frac{\partial \Pi_{ij}}{\partial x_j} - \frac{\partial S_{ij}}{\partial x_j} \right) = 0
 \label{eqn:reynolds_momentum}
 \end{equation}
 %
@@ -309,7 +309,7 @@ for zero net force, where $S_{ij}$ is the viscous stress tensor,
 S_{ij} = \rho \nu \left( \underbrace{\frac{\partial v_i}{\partial x_j} + \frac{\partial v_j}{\partial x_i}}_{\text{deformation}} - \underbrace{\frac{2}{3}\delta_{ij}\frac{\partial v_k}{\partial x_k}}_{\text{dilation}} \right)
 \end{equation}
 
-Equation \ref{eqn:reynolds_momentum} is the momentum equation derived in the companion notes,\footnote{{\it The Fundamental Equations of Hydrodynamics and Ideal Magnetohydrodynamics for Astrophysical Flows}, \S 1.2.} Equation \ref{H-eqn:momentum_equation} there, with the body force switched off and a viscous stress restored alongside the ideal momentum flux. The tensor $\Pi_{ij} = p\,\delta_{ij} + \rho v_i v_j$ is the same object in both. $S_{ij}$ carries exactly the physics which the {\it ideal} stress tensor $\sigma_{ij} = -p\,\delta_{ij}$ of that discussion discards, with the dynamic and kinematic viscosities related by $\mu = \rho\nu$.
+Equation \ref{eqn:reynolds_momentum} is the momentum equation derived in the companion notes,\footnote{{\it The Fundamental Equations of Hydrodynamics and Ideal Magnetohydrodynamics for Astrophysical Flows}, \S 1.2.} Equation \ref{H-eqn:momentum_equation} there, with the body force switched off and a viscous stress restored alongside the ideal momentum flux. The tensor $\Pi_{ij} = p\,\delta_{ij} + \rho v_i v_j$ is the same object in both. $S_{ij}$ carries exactly the physics which the {\it ideal} stress tensor $\sigma_{ij} = -p\,\delta_{ij}$ of that discussion discards, with the dynamic and kinematic viscosities related by $\mu = \rho\nu$, the minus sign appearing because a stress on a fluid element is momentum flowing {\it into} it, the opposite of the flux convention carried by $\Pi_{ij}$.
 
 \begin{equation}
 \text{Ratio} = \frac{\Pi_{ij}}{S_{ij}} \sim \frac{\rho v_0^2}{\rho \nu v_0 / L} \sim \frac{L v_0}{\nu}
