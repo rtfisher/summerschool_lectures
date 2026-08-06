@@ -793,12 +793,6 @@ The Alfv\'en Theorem states that in the ideal MHD approximation, the magnetic fl
     \frac{\mathrm{d}\Phi (S)}{\mathrm{d}t} & = 0
 \end{align}
 
-\begin{marginfigure}
-  \includegraphics[width=\linewidth]{current_sheets_dong18.png}
-  \caption{Current density from a high magnetic Reynolds number 2D MHD simulation at Lundquist number $S = 10^6$, showing reconnection and the formation of plasmoids \url {https://doi.org/10.1103/PhysRevLett.121.165101}.}
-  \label{fig:plasmoids}
-\end{marginfigure}
-
 The proof takes three lines and is worth seeing, because it makes clear exactly where the induction equation enters. The flux through a comoving surface changes for two reasons: the field itself may change in time, and the boundary of the surface sweeps through space, so that the surface encloses different field lines at different times. In a time $\mathrm{d}t$, an element $\mathrm{d}\vec{\ell}$ of the boundary sweeps out a ribbon of area $(\vec{v}\,\mathrm{d}t) \times \mathrm{d}\vec{\ell}$, and so
 
 \begin{align}
@@ -808,6 +802,12 @@ The proof takes three lines and is worth seeing, because it makes clear exactly 
 \end{align}
 %
 where the second line uses the cyclic property of the scalar triple product, the third uses Stokes' theorem, and the final equality is precisely the induction equation, Equation \ref{eqn:induction}. \marginnote{Run the argument backwards and it is equally instructive: flux freezing is not an additional physical assumption layered on top of ideal MHD, but is {\it exactly equivalent} to it. Restoring the resistive term of Equation \ref{eqn:resistive_induction} leaves $\mathrm{d}\Phi/\mathrm{d}t = \eta\int_S \del^2\B\cdot\mathrm{d}\vec{S} \ne 0$, and the field slips through the fluid.}
+
+\begin{marginfigure}
+  \includegraphics[width=\linewidth]{current_sheets_dong18.png}
+  \caption{Current density from a 2D MHD simulation at magnetic Reynolds number $R_m = 10^6$, showing reconnection and the formation of plasmoids \url {https://doi.org/10.1103/PhysRevLett.121.165101}.}
+  \label{fig:plasmoids}
+\end{marginfigure}
 
 The Alfv\'en Theorem has profound implications. Because the magnetic flux remains frozen to the fluid in the ideal MHD approximation, we can understand a myriad of complex physical effects simply and intuitively. As just one example, displacing the magnetic field perpendicular to its length generates a restoring force from the magnetic tension term of Equation \ref{eqn:lorentz}, and gives rise to incompressible MHD waves called Alfv\'en waves, propagating along the field at the Alfv\'en speed $v_A$.
 The Alfv\'en Theorem also implies that the magnetic field topology is unchanged in ideal MHD, and points to some inherent limitations of this set of approximations. Turbulent dynamos, for instance, require that the magnetic field cascading down to small length scales eventually undergoes magnetic reconnection, which changes the topology of the field. At sufficiently high magnetic Reynolds number, turbulently folded magnetic sheets become extremely thin, and get chopped up, or reconnected,  into isolated islands of magnetic flux called ``plasmoids'' (Fig. \ref{fig:plasmoids}).
